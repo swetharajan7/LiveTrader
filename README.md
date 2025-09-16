@@ -50,36 +50,3 @@ Reflect — Produces a recommendation with confidence and rationale.
 
 Autonomy is enabled via EventBridge, which schedules the agent to run without human input. All insights are stored in DynamoDB and displayed in a React dashboard hosted on AWS Amplify.
 
-🏗️ Architecture
-
-Components:
-
-Frontend (React) — Hosted on Amplify / CloudFront.
-
-API Gateway — Entry point for frontend → backend calls.
-
-Lambda (Orchestrator) — Runs the agent loop.
-
-Amazon Bedrock — Reasoning LLM + AgentCore for planning & tool use.
-
-Lambda Tools — Market data fetcher, risk metrics calculator, paper trading.
-
-DynamoDB — Stores users, trades, insights, memory.
-
-EventBridge — Triggers daily autonomous runs.
-
-CloudWatch — Logs, metrics, error tracking.
-
-🛠️ Tech Stack
-
-AWS Services: Bedrock, AgentCore, DynamoDB, EventBridge, API Gateway, Lambda, Amplify, CloudWatch
-
-Frontend: React + TailwindCSS
-
-Backend: Python (FastAPI + AWS SDK for Agents)
-
-Data APIs: Polygon.io / Alpha Vantage (market data)
-
-Optional: Alpaca paper trading sandbox
-
-MIT License. 
