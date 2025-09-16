@@ -1,4 +1,4 @@
-##LiveTrader.ai
+LiveTrader.ai
 
 An autonomous AI trading coach built on AWS — LiveTrader.ai analyzes your trading habits, monitors real-time market data, and delivers explainable, proactive insights to help you trade smarter and safer.
 
