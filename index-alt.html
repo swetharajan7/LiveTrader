@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveTrader.ai - Pattern Recognition Trading Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        /* Hero Section with Search */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight {
+            color: #00ff88;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            color: #b8c5d6;
+        }
+
+        /* Natural Language Search */
+        .search-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-header h3 {
+            font-size: 1.2rem;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-header p {
+            font-size: 0.9rem;
+            color: #b8c5d6;
+            margin: 0;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: #ffffff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: #7a8a9a;
+        }
+
+        .search-suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .suggestion-chip {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: #00ff88;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Pattern Recognition Dashboard */
+        .pattern-dashboard {
+            padding: 4rem 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .main-chart {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        .chart-area {
+            height: 300px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 200, 100, 0.05) 100%);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pattern-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path d="M20,180 Q60,160 100,140 T180,120 T260,100 T340,80" fill="none" stroke="rgba(0,255,136,0.8)" stroke-width="3"/><circle cx="340" cy="80" r="6" fill="%2300ff88"/><path d="M200,120 Q220,110 240,105 T280,95" fill="none" stroke="rgba(255,100,100,0.8)" stroke-width="2" stroke-dasharray="5,5"/></svg>');
+            background-size: cover;
+        }
+
+        .pattern-annotations {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 20, 25, 0.9);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .annotation-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .annotation-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Insights Panel */
+        .insights-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .insight-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .insight-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .insight-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #00ff88;
+        }
+
+        .confidence-badge {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc70 100%);
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .insight-description {
+            font-size: 0.9rem;
+            color: #b8c5d6;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .insight-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: #b8c5d6;
+            margin-top: 0.25rem;
+        }
+
+        /* Natural Language Results */
+        .nl-results {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #1a2332 0%, #0f1419 100%);
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .query-explanation {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .explanation-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .explanation-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-query {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 3px solid #00ff88;
+            padding: 1rem;
+            border-radius: 8px;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .explanation-steps {
+            list-style: none;
+        }
+
+        .explanation-steps li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #b8c5d6;
+        }
+
+        .explanation-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            color: #00ff88;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-container {
+                grid-template-columns: 1fr;
+            }
+
+            .search-suggestions {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">LiveTrader.ai</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#patterns">Patterns</a></li>
+                <li><a href="#search">Search</a></li>
+                <li><a href="#explainability">Explainability</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>
+                        <span class="highlight">Pattern Recognition</span><br>
+                        Trading Intelligence
+                    </h1>
+                    <p>
+                        Ask questions in natural language. Get explainable insights from decades of stock exchange data with real-time pattern recognition for smarter trading decisions.
+                    </p>
+
+                    <div class="search-container">
+                        <div class="search-header">
+                            <h3>🤖 Natural Language Trading Assistant</h3>
+                            <p>Ask anything about market patterns, historical data, or trading signals</p>
+                        </div>
+                        
+                        <div class="search-box">
+                            <input 
+                                type="text" 
+                                class="search-input" 
+                                placeholder="e.g., 'Show me AAPL patterns similar to the 2008 financial crisis' or 'What sectors performed best during high inflation periods?'"
+                            >
+                        </div>
+
+                        <div class="search-suggestions">
+                            <div class="suggestion-chip">Find head and shoulders patterns in tech stocks</div>
+                            <div class="suggestion-chip">Compare Tesla volatility to traditional automakers</div>
+                            <div class="suggestion-chip">Show me pre-earnings patterns for FAANG stocks</div>
+                            <div class="suggestion-chip">Identify support levels for S&P 500 during recessions</div>
+                            <div class="suggestion-chip">What happens to gold prices during market crashes?</div>
+                            <div class="suggestion-chip">Find similar patterns to GameStop squeeze</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pattern-dashboard" id="patterns">
+            <div class="container">
+                <h2>Real-Time <span class="highlight">Pattern Recognition</span></h2>
+                <p>Live analysis of market patterns with historical context and predictive insights</p>
+
+                <div class="dashboard-grid">
+                    <div class="main-chart">
+                        <div class="chart-header">
+                            <h3 class="chart-title">AAPL - Pattern Match: 87% Similar to Oct 2018</h3>
+                            <div class="live-indicator">
+                                <div class="live-dot"></div>
+                                <span>Live Analysis</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-area">
+                            <div class="pattern-overlay"></div>
+                            <div class="pattern-annotations">
+                                <div class="annotation-item">
+                                    <div class="annotation-dot" style="background: #00ff88;"></div>
+                                    <span>Current Pattern</span>
+                                </div>
+                                <div class="annotation-item">
+                                    <div class="annotation-dot" style="background: #ff6464;"></div>
+                                    <span>Historical Match</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="insights-panel">
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <h4 class="insight-title">Pattern Confidence</h4>
+                                <span class="confidence-badge">87%</span>
+                            </div>
+                            <p class="insight-description">
+                                Current price action shows 87% similarity to October 2018 pattern. Historical outcome: +12% over 30 days.
+                            </p>
+                            <div class="insight-metrics">
+                                <div class="metric-item">
+                                    <div class="metric-value">+12%</div>
+                                    <div class="metric-label">Historical Return</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">23</div>
+                                    <div class="metric-label">Days to Peak</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <h4 class="insight-title">Risk Assessment</h4>
+                                <span class="confidence-badge">Low</span>
+                            </div>
+                            <p class="insight-description">
+                                Based on 15 similar historical patterns, downside risk is limited to -3.2% with 92% probability.
+                            </p>
+                            <div class="insight-metrics">
+                                <div class="metric-item">
+                                    <div class="metric-value">-3.2%</div>
+                                    <div class="metric-label">Max Downside</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">92%</div>
+                                    <div class="metric-label">Probability</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="insight-card">
+                            <div class="insight-header">
+                                <h4 class="insight-title">Volume Analysis</h4>
+                                <span class="confidence-badge">Strong</span>
+                            </div>
+                            <p class="insight-description">
+                                Volume profile matches institutional accumulation patterns seen in previous bullish breakouts.
+                            </p>
+                            <div class="insight-metrics">
+                                <div class="metric-item">
+                                    <div class="metric-value">+34%</div>
+                                    <div class="metric-label">Volume Increase</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">78%</div>
+                                    <div class="metric-label">Institutional</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="nl-results" id="explainability">
+            <div class="container">
+                <h2><span class="highlight">Explainable</span> AI Reasoning</h2>
+                <p>Transparent, step-by-step explanations for every insight and recommendation</p>
+
+                <div class="results-container">
+                    <div class="query-explanation">
+                        <div class="explanation-header">
+                            <h3 class="explanation-title">Query Analysis</h3>
+                        </div>
+                        
+                        <div class="user-query">
+                            "Show me AAPL patterns similar to the 2008 financial crisis"
+                        </div>
+
+                        <ul class="explanation-steps">
+                            <li><span class="step-number">1.</span> Analyzed AAPL price data from 2007-2009 period</li>
+                            <li><span class="step-number">2.</span> Identified key pattern characteristics: -50% drawdown, high volatility</li>
+                            <li><span class="step-number">3.</span> Searched historical database for similar volatility signatures</li>
+                            <li><span class="step-number">4.</span> Found 7 matching patterns across different time periods</li>
+                            <li><span class="step-number">5.</span> Calculated average recovery time: 18 months</li>
+                            <li><span class="step-number">6.</span> Applied current market context and risk factors</li>
+                        </ul>
+                    </div>
+
+                    <div class="query-explanation">
+                        <div class="explanation-header">
+                            <h3 class="explanation-title">Data Sources</h3>
+                        </div>
+                        
+                        <div class="user-query">
+                            Historical data points used in this analysis
+                        </div>
+
+                        <ul class="explanation-steps">
+                            <li><span class="step-number">•</span> NYSE historical data: 1970-2024 (54 years)</li>
+                            <li><span class="step-number">•</span> NASDAQ composite data: 1971-2024</li>
+                            <li><span class="step-number">•</span> VIX volatility index: 1990-2024</li>
+                            <li><span class="step-number">•</span> Federal Reserve economic data</li>
+                            <li><span class="step-number">•</span> Corporate earnings reports: 10-K, 10-Q filings</li>
+                            <li><span class="step-number">•</span> Real-time market microstructure data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
