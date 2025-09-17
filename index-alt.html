@@ -43,6 +43,12 @@
             padding: 1rem 0;
         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
@@ -64,6 +70,58 @@
 
         .nav-links a:hover {
             color: #dc2626;
+        }
+
+        /* NYC Time Toggle */
+        .nyc-time-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nyc-time-toggle:hover {
+            background: rgba(220, 38, 38, 0.2);
+            border-color: rgba(220, 38, 38, 0.5);
+        }
+
+        .nyc-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #dc2626;
+            animation: pulse 2s infinite;
+        }
+
+        .nyc-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .nyc-location {
+            font-size: 0.75rem;
+            color: #b8c5d6;
+            font-weight: 500;
+        }
+
+        .nyc-time {
+            font-size: 0.9rem;
+            color: #ffffff;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .market-status {
+            font-size: 0.65rem;
+            color: #dc2626;
+            font-weight: 600;
+            margin-top: 1px;
         }
 
         /* Hero Section with Search */
@@ -597,6 +655,17 @@
                 display: none;
             }
 
+            .nav-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .nyc-time-toggle {
+                order: -1;
+                margin-bottom: 0.5rem;
+            }
+
             .footer-content {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -626,13 +695,23 @@
 <body>
     <header>
         <nav class="container">
-            <div class="logo">LiveTrader.ai</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#patterns">Patterns</a></li>
-                <li><a href="#search">Search</a></li>
-                <li><a href="#explainability">Explainability</a></li>
-            </ul>
+            <div class="nav-left">
+                <div class="logo">LiveTrader.ai</div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#patterns">Patterns</a></li>
+                    <li><a href="#search">Search</a></li>
+                    <li><a href="#explainability">Explainability</a></li>
+                </ul>
+            </div>
+            <div class="nyc-time-toggle" onclick="toggleTimeZone()">
+                <div class="nyc-indicator"></div>
+                <div class="nyc-info">
+                    <div class="nyc-location">New York City</div>
+                    <div class="nyc-time" id="nycTime">--:--:-- --</div>
+                    <div class="market-status" id="marketStatus">MARKET CLOSED</div>
+                </div>
+            </div>
         </nav>
     </header>
 
@@ -914,5 +993,90 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // NYC Time and Market Status
+        function updateNYCTime() {
+            const now = new Date();
+            const nycTime = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+            
+            // Format time
+            const timeString = nycTime.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            document.getElementById('nycTime').textContent = timeString;
+            
+            // Determine market status
+            const day = nycTime.getDay(); // 0 = Sunday, 6 = Saturday
+            const hour = nycTime.getHours();
+            const minute = nycTime.getMinutes();
+            const totalMinutes = hour * 60 + minute;
+            
+            // Market hours: Monday-Friday 9:30 AM - 4:00 PM EST
+            const marketOpen = 9 * 60 + 30; // 9:30 AM
+            const marketClose = 16 * 60; // 4:00 PM
+            
+            let status = 'MARKET CLOSED';
+            let statusColor = '#dc2626';
+            
+            if (day >= 1 && day <= 5) { // Monday to Friday
+                if (totalMinutes >= marketOpen && totalMinutes < marketClose) {
+                    status = 'MARKET OPEN';
+                    statusColor = '#00ff88';
+                } else if (totalMinutes >= marketOpen - 30 && totalMinutes < marketOpen) {
+                    status = 'PRE-MARKET';
+                    statusColor = '#fbbf24';
+                } else if (totalMinutes >= marketClose && totalMinutes < marketClose + 240) {
+                    status = 'AFTER-HOURS';
+                    statusColor = '#fbbf24';
+                }
+            }
+            
+            const statusElement = document.getElementById('marketStatus');
+            statusElement.textContent = status;
+            statusElement.style.color = statusColor;
+        }
+        
+        // Toggle between different time zones (future feature)
+        function toggleTimeZone() {
+            // For now, just update the time
+            updateNYCTime();
+            
+            // Future: cycle through NYC, London, Tokyo, etc.
+            console.log('Time zone toggle clicked - NYC time updated');
+        }
+        
+        // Update time every second
+        setInterval(updateNYCTime, 1000);
+        
+        // Initial update
+        updateNYCTime();
+        
+        // Search functionality placeholder
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.search-input');
+            const suggestionChips = document.querySelectorAll('.suggestion-chip');
+            
+            // Handle suggestion chip clicks
+            suggestionChips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    searchInput.value = this.textContent;
+                    searchInput.focus();
+                });
+            });
+            
+            // Handle search input
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    console.log('Search query:', this.value);
+                    // Future: implement actual search functionality
+                }
+            });
+        });
+    </script>
 </body>
 </html>
