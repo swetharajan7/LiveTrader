@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favicon Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        .size-label { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>LiveTrader.ai Favicon Generator</h1>
+    <p>This will generate PNG versions of the NYSE bell favicon.</p>
+    
+    <div class="size-label">16x16 Favicon:</div>
+    <canvas id="favicon16" width="16" height="16"></canvas>
+    <button onclick="downloadCanvas('favicon16', 'favicon-16x16.png')">Download 16x16</button>
+    
+    <div class="size-label">32x32 Favicon:</div>
+    <canvas id="favicon32" width="32" height="32"></canvas>
+    <button onclick="downloadCanvas('favicon32', 'favicon-32x32.png')">Download 32x32</button>
+    
+    <div class="size-label">180x180 Apple Touch Icon:</div>
+    <canvas id="apple180" width="180" height="180"></canvas>
+    <button onclick="downloadCanvas('apple180', 'apple-touch-icon.png')">Download 180x180</button>
+
+    <script>
+        function drawBell(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const scale = size / 32;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Scale all coordinates
+            ctx.scale(scale, scale);
+            
+            // Bell Handle
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(14, 4, 4, 6);
+            
+            // Bell Body
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.moveTo(8, 10);
+            ctx.quadraticCurveTo(8, 8, 10, 8);
+            ctx.lineTo(22, 8);
+            ctx.quadraticCurveTo(24, 8, 24, 10);
+            ctx.lineTo(24, 18);
+            ctx.quadraticCurveTo(24, 22, 20, 24);
+            ctx.lineTo(12, 24);
+            ctx.quadraticCurveTo(8, 22, 8, 18);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Bell Rim
+            ctx.fillStyle = '#DAA520';
+            ctx.beginPath();
+            ctx.ellipse(16, 24, 8, 2, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Bell Clapper
+            ctx.fillStyle = '#696969';
+            ctx.beginPath();
+            ctx.arc(16, 20, 1.5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Sound waves
+            ctx.strokeStyle = '#DC2626';
+            ctx.lineWidth = 1.5;
+            ctx.lineCap = 'round';
+            
+            // Right sound waves
+            ctx.beginPath();
+            ctx.moveTo(26, 12);
+            ctx.quadraticCurveTo(28, 14, 28, 16);
+            ctx.quadraticCurveTo(28, 18, 26, 20);
+            ctx.stroke();
+            
+            // Left sound waves
+            ctx.beginPath();
+            ctx.moveTo(6, 12);
+            ctx.quadraticCurveTo(4, 14, 4, 16);
+            ctx.quadraticCurveTo(4, 18, 6, 20);
+            ctx.stroke();
+            
+            // Reset scale for next drawing
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+        }
+        
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Draw all sizes when page loads
+        window.onload = function() {
+            drawBell(document.getElementById('favicon16'), 16);
+            drawBell(document.getElementById('favicon32'), 32);
+            drawBell(document.getElementById('apple180'), 180);
+        };
+    </script>
+</body>
+</html>
