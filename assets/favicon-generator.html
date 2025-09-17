@@ -25,67 +25,39 @@
     <button onclick="downloadCanvas('apple180', 'apple-touch-icon.png')">Download 180x180</button>
 
     <script>
+        // Polyfill for roundRect if not supported
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+            };
+        }
+
         function drawBell(canvas, size) {
             const ctx = canvas.getContext('2d');
-            const scale = size / 32;
             
             // Clear canvas
             ctx.clearRect(0, 0, size, size);
             
-            // Scale all coordinates
-            ctx.scale(scale, scale);
+            // Flag blue background with rounded corners
+            ctx.fillStyle = '#1e3a8a';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.125);
+            ctx.fill();
             
-            // Bell Handle
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(14, 4, 4, 6);
-            
-            // Bell Body
+            // Bell emoji
+            ctx.font = `${size * 0.625}px Arial, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
             ctx.fillStyle = '#FFD700';
-            ctx.beginPath();
-            ctx.moveTo(8, 10);
-            ctx.quadraticCurveTo(8, 8, 10, 8);
-            ctx.lineTo(22, 8);
-            ctx.quadraticCurveTo(24, 8, 24, 10);
-            ctx.lineTo(24, 18);
-            ctx.quadraticCurveTo(24, 22, 20, 24);
-            ctx.lineTo(12, 24);
-            ctx.quadraticCurveTo(8, 22, 8, 18);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Bell Rim
-            ctx.fillStyle = '#DAA520';
-            ctx.beginPath();
-            ctx.ellipse(16, 24, 8, 2, 0, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            // Bell Clapper
-            ctx.fillStyle = '#696969';
-            ctx.beginPath();
-            ctx.arc(16, 20, 1.5, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            // Sound waves
-            ctx.strokeStyle = '#DC2626';
-            ctx.lineWidth = 1.5;
-            ctx.lineCap = 'round';
-            
-            // Right sound waves
-            ctx.beginPath();
-            ctx.moveTo(26, 12);
-            ctx.quadraticCurveTo(28, 14, 28, 16);
-            ctx.quadraticCurveTo(28, 18, 26, 20);
-            ctx.stroke();
-            
-            // Left sound waves
-            ctx.beginPath();
-            ctx.moveTo(6, 12);
-            ctx.quadraticCurveTo(4, 14, 4, 16);
-            ctx.quadraticCurveTo(4, 18, 6, 20);
-            ctx.stroke();
-            
-            // Reset scale for next drawing
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.fillText('🔔', size / 2, size / 2);
         }
         
         function downloadCanvas(canvasId, filename) {
