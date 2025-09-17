@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #1e3a8a 100%);
             color: #ffffff;
             overflow-x: hidden;
         }
@@ -30,10 +30,10 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 20, 25, 0.95);
+            background: rgba(30, 58, 138, 0.95);
             backdrop-filter: blur(10px);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.3);
         }
 
         nav {
@@ -46,7 +46,7 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #00ff88;
+            color: #dc2626;
         }
 
         .nav-links {
@@ -63,7 +63,7 @@
         }
 
         .nav-links a:hover {
-            color: #00ff88;
+            color: #dc2626;
         }
 
         /* Hero Section with Search */
@@ -89,7 +89,7 @@
         }
 
         .highlight {
-            color: #00ff88;
+            color: #dc2626;
         }
 
         .hero p {
@@ -102,7 +102,7 @@
         /* Natural Language Search */
         .search-container {
             background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(0, 255, 136, 0.3);
+            border: 2px solid rgba(59, 130, 246, 0.4);
             border-radius: 16px;
             padding: 2rem;
             margin-bottom: 3rem;
@@ -115,7 +115,7 @@
 
         .search-header h3 {
             font-size: 1.2rem;
-            color: #00ff88;
+            color: #dc2626;
             margin-bottom: 0.5rem;
         }
 
@@ -143,8 +143,8 @@
         }
 
         .search-input:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            border-color: #dc2626;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
         }
 
         .search-input::placeholder {
@@ -159,19 +159,19 @@
         }
 
         .suggestion-chip {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
             border-radius: 20px;
             padding: 0.5rem 1rem;
             font-size: 0.85rem;
-            color: #00ff88;
+            color: #dc2626;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
         }
 
         .suggestion-chip:hover {
-            background: rgba(0, 255, 136, 0.2);
+            background: rgba(220, 38, 38, 0.2);
             transform: translateY(-2px);
         }
 
@@ -212,7 +212,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(0, 255, 136, 0.1);
+            background: rgba(59, 130, 246, 0.1);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -222,13 +222,13 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #00ff88;
+            background: #dc2626;
             animation: pulse 2s infinite;
         }
 
         .chart-area {
             height: 300px;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 200, 100, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%);
             border-radius: 12px;
             position: relative;
             overflow: hidden;
@@ -240,7 +240,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path d="M20,180 Q60,160 100,140 T180,120 T260,100 T340,80" fill="none" stroke="rgba(0,255,136,0.8)" stroke-width="3"/><circle cx="340" cy="80" r="6" fill="%2300ff88"/><path d="M200,120 Q220,110 240,105 T280,95" fill="none" stroke="rgba(255,100,100,0.8)" stroke-width="2" stroke-dasharray="5,5"/></svg>');
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><path d="M20,180 Q60,160 100,140 T180,120 T260,100 T340,80" fill="none" stroke="rgba(59,130,246,0.8)" stroke-width="3"/><circle cx="340" cy="80" r="6" fill="%233b82f6"/><path d="M200,120 Q220,110 240,105 T280,95" fill="none" stroke="rgba(255,100,100,0.8)" stroke-width="2" stroke-dasharray="5,5"/></svg>');
             background-size: cover;
         }
 
@@ -249,7 +249,7 @@
             top: 20px;
             right: 20px;
             background: rgba(15, 20, 25, 0.9);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 8px;
             padding: 1rem;
             font-size: 0.8rem;
@@ -292,12 +292,12 @@
         .insight-title {
             font-size: 1rem;
             font-weight: 600;
-            color: #00ff88;
+            color: #dc2626;
         }
 
         .confidence-badge {
-            background: linear-gradient(135deg, #00ff88 0%, #00cc70 100%);
-            color: #000;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: #fff;
             padding: 0.25rem 0.75rem;
             border-radius: 12px;
             font-size: 0.7rem;
@@ -320,14 +320,14 @@
         .metric-item {
             text-align: center;
             padding: 0.75rem;
-            background: rgba(0, 255, 136, 0.1);
+            background: rgba(220, 38, 38, 0.1);
             border-radius: 8px;
         }
 
         .metric-value {
             font-size: 1.2rem;
             font-weight: 700;
-            color: #00ff88;
+            color: #dc2626;
         }
 
         .metric-label {
@@ -362,13 +362,13 @@
         .explanation-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #00ff88;
+            color: #dc2626;
             margin-bottom: 0.5rem;
         }
 
         .user-query {
-            background: rgba(0, 255, 136, 0.1);
-            border-left: 3px solid #00ff88;
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 3px solid #dc2626;
             padding: 1rem;
             border-radius: 8px;
             font-style: italic;
@@ -391,7 +391,7 @@
         }
 
         .step-number {
-            color: #00ff88;
+            color: #dc2626;
             font-weight: 600;
             margin-right: 0.5rem;
         }
@@ -496,7 +496,7 @@
                             <div class="pattern-overlay"></div>
                             <div class="pattern-annotations">
                                 <div class="annotation-item">
-                                    <div class="annotation-dot" style="background: #00ff88;"></div>
+                                    <div class="annotation-dot" style="background: #dc2626;"></div>
                                     <span>Current Pattern</span>
                                 </div>
                                 <div class="annotation-item">
