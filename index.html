@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveTrader.ai - Historical Advantage Copilot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text .highlight {
+            color: #00d4ff;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #b8c5d6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00d4ff;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #b8c5d6;
+            margin-top: 0.5rem;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            height: 500px;
+        }
+
+        .trading-chart {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 204, 0.1) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><path d="M20,250 Q100,200 150,180 T250,160 T350,140" fill="none" stroke="rgba(0,212,255,0.8)" stroke-width="3"/><path d="M20,200 Q80,150 120,140 T200,120 T300,100 T380,80" fill="none" stroke="rgba(0,255,150,0.6)" stroke-width="2"/></svg>');
+            background-size: cover;
+        }
+
+        .floating-data {
+            position: absolute;
+            background: rgba(10, 14, 39, 0.9);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-data:nth-child(2) { top: 20%; right: 20%; animation-delay: -1s; }
+        .floating-data:nth-child(3) { bottom: 30%; left: 15%; animation-delay: -2s; }
+        .floating-data:nth-child(4) { top: 60%; right: 40%; animation-delay: -0.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Data Repository Section */
+        .data-repository {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #b8c5d6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .exchanges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .exchange-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exchange-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .exchange-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .exchange-flag {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .exchange-info h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .exchange-info .country {
+            color: #b8c5d6;
+            font-size: 0.9rem;
+        }
+
+        .data-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #b8c5d6;
+            margin-top: 0.25rem;
+        }
+
+        .data-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(0, 255, 150, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 150, 0.3);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff96;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Insights Dashboard */
+        .insights-dashboard {
+            padding: 6rem 0;
+            background: #0a0e27;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .insights-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .panel-badge {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .prediction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .prediction-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .prediction-info p {
+            font-size: 0.8rem;
+            color: #b8c5d6;
+        }
+
+        .confidence-score {
+            text-align: right;
+        }
+
+        .confidence-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00ff96;
+        }
+
+        .confidence-label {
+            font-size: 0.7rem;
+            color: #b8c5d6;
+        }
+
+        .chart-container {
+            height: 200px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .trend-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path d="M10,140 Q50,120 80,100 T140,80 T200,60 T280,40" fill="none" stroke="rgba(0,212,255,0.8)" stroke-width="2"/><circle cx="280" cy="40" r="4" fill="%2300d4ff"/></svg>');
+            background-size: cover;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .exchanges-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .data-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">LiveTrader.ai</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#data">Data Repository</a></li>
+                <li><a href="#insights">Insights</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-background"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>
+                            Your <span class="highlight">Historical Advantage</span><br>
+                            Copilot for Market Intelligence
+                        </h1>
+                        <p>
+                            Powered by AWS and decades of cross-market data, LiveTrader.ai transforms 
+                            historical patterns into predictive, explainable insights that give brokers 
+                            and banks a strategic edge in real-time.
+                        </p>
+                        <div class="cta-buttons">
+                            <a href="#data" class="btn btn-primary">Explore Data Repository</a>
+                            <a href="#insights" class="btn btn-secondary">View Insights</a>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-number">50+</span>
+                                <div class="stat-label">Years of Market Data</div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">15</span>
+                                <div class="stat-label">Global Exchanges</div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">99.9%</span>
+                                <div class="stat-label">Uptime Reliability</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="trading-chart">
+                            <div class="chart-lines"></div>
+                            <div class="floating-data">
+                                <strong>NYSE</strong><br>
+                                +2.4% ↗
+                            </div>
+                            <div class="floating-data">
+                                <strong>NASDAQ</strong><br>
+                                +1.8% ↗
+                            </div>
+                            <div class="floating-data">
+                                <strong>LSE</strong><br>
+                                -0.3% ↘
+                            </div>
+                            <div class="floating-data">
+                                <strong>AI Prediction</strong><br>
+                                87% Confidence
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Repository Section -->
+        <section class="data-repository" id="data">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Global Market <span class="highlight">Data Repository</span></h2>
+                    <p>Access decades of normalized, cross-exchange historical data from the world's leading financial markets, all stored securely on AWS infrastructure.</p>
+                </div>
+
+                <div class="exchanges-grid">
+                    <div class="exchange-card">
+                        <div class="exchange-header">
+                            <div class="exchange-flag" style="background: linear-gradient(135deg, #1f4e79 0%, #2e5984 100%);">🇺🇸</div>
+                            <div class="exchange-info">
+                                <h3>New York Stock Exchange</h3>
+                                <div class="country">United States</div>
+                            </div>
+                        </div>
+                        <div class="data-metrics">
+                            <div class="metric">
+                                <div class="metric-value">3,200+</div>
+                                <div class="metric-label">Listed Companies</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">45</div>
+                                <div class="metric-label">Years of Data</div>
+                            </div>
+                        </div>
+                        <div class="data-status">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Live Data Feed</span>
+                            </div>
+                            <span>99.98% Uptime</span>
+                        </div>
+                    </div>
+
+                    <div class="exchange-card">
+                        <div class="exchange-header">
+                            <div class="exchange-flag" style="background: linear-gradient(135deg, #1f4e79 0%, #2e5984 100%);">🇺🇸</div>
+                            <div class="exchange-info">
+                                <h3>NASDAQ</h3>
+                                <div class="country">United States</div>
+                            </div>
+                        </div>
+                        <div class="data-metrics">
+                            <div class="metric">
+                                <div class="metric-value">4,100+</div>
+                                <div class="metric-label">Listed Companies</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">52</div>
+                                <div class="metric-label">Years of Data</div>
+                            </div>
+                        </div>
+                        <div class="data-status">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Live Data Feed</span>
+                            </div>
+                            <span>99.97% Uptime</span>
+                        </div>
+                    </div>
+
+                    <div class="exchange-card">
+                        <div class="exchange-header">
+                            <div class="exchange-flag" style="background: linear-gradient(135deg, #c8102e 0%, #d42c47 100%);">🇬🇧</div>
+                            <div class="exchange-info">
+                                <h3>London Stock Exchange</h3>
+                                <div class="country">United Kingdom</div>
+                            </div>
+                        </div>
+                        <div class="data-metrics">
+                            <div class="metric">
+                                <div class="metric-value">2,000+</div>
+                                <div class="metric-label">Listed Companies</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">38</div>
+                                <div class="metric-label">Years of Data</div>
+                            </div>
+                        </div>
+                        <div class="data-status">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Live Data Feed</span>
+                            </div>
+                            <span>99.95% Uptime</span>
+                        </div>
+                    </div>
+
+                    <div class="exchange-card">
+                        <div class="exchange-header">
+                            <div class="exchange-flag" style="background: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);">🇯🇵</div>
+                            <div class="exchange-info">
+                                <h3>Tokyo Stock Exchange</h3>
+                                <div class="country">Japan</div>
+                            </div>
+                        </div>
+                        <div class="data-metrics">
+                            <div class="metric">
+                                <div class="metric-value">3,800+</div>
+                                <div class="metric-label">Listed Companies</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">42</div>
+                                <div class="metric-label">Years of Data</div>
+                            </div>
+                        </div>
+                        <div class="data-status">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Live Data Feed</span>
+                            </div>
+                            <span>99.96% Uptime</span>
+                        </div>
+                    </div>
+
+                    <div class="exchange-card">
+                        <div class="exchange-header">
+                            <div class="exchange-flag" style="background: linear-gradient(135deg, #000000 0%, #333333 100%);">🇩🇪</div>
+                            <div class="exchange-info">
+                                <h3>Frankfurt Stock Exchange</h3>
+                                <div class="country">Germany</div>
+                            </div>
+                        </div>
+                        <div class="data-metrics">
+                            <div class="metric">
+                                <div class="metric-value">750+</div>
+                                <div class="metric-label">Listed Companies</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">35</div>
+                                <div class="metric-label">Years of Data</div>
+                            </div>
+                        </div>
+                        <div class="data-status">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Live Data Feed</span>
+                            </div>
+                            <span>99.94% Uptime</span>
+                        </div>
+                    </div>
+
+                    <div class="exchange-card">
+                        <div class="exchange-header">
+                            <div class="exchange-flag" style="background: linear-gradient(135deg, #ff6600 0%, #ff8833 100%);">🇮🇳</div>
+                            <div class="exchange-info">
+                                <h3>Bombay Stock Exchange</h3>
+                                <div class="country">India</div>
+                            </div>
+                        </div>
+                        <div class="data-metrics">
+                            <div class="metric">
+                                <div class="metric-value">5,500+</div>
+                                <div class="metric-label">Listed Companies</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">28</div>
+                                <div class="metric-label">Years of Data</div>
+                            </div>
+                        </div>
+                        <div class="data-status">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Live Data Feed</span>
+                            </div>
+                            <span>99.93% Uptime</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights Dashboard Section -->
+        <section class="insights-dashboard" id="insights">
+            <div class="container">
+                <div class="section-header">
+                    <h2>AI-Powered <span class="highlight">Insights Dashboard</span></h2>
+                    <p>Real-time predictive analytics powered by Amazon Bedrock, delivering explainable insights with transparent reasoning from historical market patterns.</p>
+                </div>
+
+                <div class="dashboard-container">
+                    <div class="insights-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">Market Predictions</h3>
+                            <span class="panel-badge">Live</span>
+                        </div>
+                        
+                        <div class="prediction-item">
+                            <div class="prediction-info">
+                                <h4>S&P 500 Trend Reversal</h4>
+                                <p>Based on 1987, 2008 pattern analysis</p>
+                            </div>
+                            <div class="confidence-score">
+                                <div class="confidence-value">87%</div>
+                                <div class="confidence-label">Confidence</div>
+                            </div>
+                        </div>
+
+                        <div class="prediction-item">
+                            <div class="prediction-info">
+                                <h4>Tech Sector Volatility</h4>
+                                <p>Correlation with bond yield patterns</p>
+                            </div>
+                            <div class="confidence-score">
+                                <div class="confidence-value">92%</div>
+                                <div class="confidence-label">Confidence</div>
+                            </div>
+                        </div>
+
+                        <div class="prediction-item">
+                            <div class="prediction-info">
+                                <h4>Energy Sector Momentum</h4>
+                                <p>Historical oil price correlation</p>
+                            </div>
+                            <div class="confidence-score">
+                                <div class="confidence-value">78%</div>
+                                <div class="confidence-label">Confidence</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="trend-line"></div>
+                        </div>
+                    </div>
+
+                    <div class="insights-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">Risk Analysis</h3>
+                            <span class="panel-badge">AWS Bedrock</span>
+                        </div>
+                        
+                        <div class="prediction-item">
+                            <div class="prediction-info">
+                                <h4>Portfolio Diversification</h4>
+                                <p>Cross-correlation risk assessment</p>
+                            </div>
+                            <div class="confidence-score">
+                                <div class="confidence-value">94%</div>
+                                <div class="confidence-label">Optimal</div>
+                            </div>
+                        </div>
+
+                        <div class="prediction-item">
+                            <div class="prediction-info">
+                                <h4>Market Stress Indicators</h4>
+                                <p>VIX pattern recognition analysis</p>
+                            </div>
+                            <div class="confidence-score">
+                                <div class="confidence-value">Low</div>
+                                <div class="confidence-label">Risk Level</div>
+                            </div>
+                        </div>
+
+                        <div class="prediction-item">
+                            <div class="prediction-info">
+                                <h4>Sector Rotation Signal</h4>
+                                <p>Historical cycle analysis</p>
+                            </div>
+                            <div class="confidence-score">
+                                <div class="confidence-value">Strong</div>
+                                <div class="confidence-label">Signal</div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="trend-line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
