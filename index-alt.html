@@ -151,6 +151,39 @@
             color: #1f2937 !important;
         }
 
+        /* Historical Periods Dropdown */
+        .dropdown-period {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #1f2937 !important;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background: transparent;
+        }
+
+        .dropdown-period:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-period:hover {
+            background: #e0f2fe !important;
+            color: #1e3a8a !important;
+        }
+
+        .dropdown-period:visited {
+            color: #1f2937 !important;
+        }
+
+        .explainability-menu {
+            min-width: 200px;
+        }
+
+        .patterns-menu {
+            min-width: 300px;
+        }
+
         /* NYC Time Toggle */
         .nyc-time-toggle {
             display: flex;
@@ -1104,10 +1137,19 @@
                 <a href="index.html" class="logo">LiveTrader.ai</a>
                 <ul class="nav-links">
                     <li><a href="#search">Search</a></li>
-                    <li><a href="#explainability">Explainability</a></li>
+                    <li class="dropdown">
+                        <a href="#explainability" class="dropdown-toggle">Explainability ▼</a>
+                        <div class="dropdown-menu explainability-menu">
+                            <a href="#" class="dropdown-period">📅 Current</a>
+                            <a href="#" class="dropdown-period">📅 2015-2025</a>
+                            <a href="#" class="dropdown-period">📅 2005-2015</a>
+                            <a href="#" class="dropdown-period">📅 1995-2005</a>
+                            <a href="#" class="dropdown-period">📅 Before 1995</a>
+                        </div>
+                    </li>
                     <li class="dropdown">
                         <a href="#patterns" class="dropdown-toggle">Patterns ▼</a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu patterns-menu">
                             <a href="#" class="dropdown-category">📈 Bullish Patterns</a>
                             <a href="#" class="dropdown-category">📉 Bearish Patterns</a>
                             <a href="#" class="dropdown-category">➡️ Neutral / Continuation Patterns</a>
@@ -1441,11 +1483,30 @@
                 });
             });
 
-            // Improve dropdown stability
-            const dropdown = document.querySelector('.dropdown');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
-            
-            if (dropdown && dropdownMenu) {
+            // Handle historical period clicks
+            const dropdownPeriods = document.querySelectorAll('.dropdown-period');
+            dropdownPeriods.forEach(period => {
+                period.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const periodName = this.textContent.replace(/📅/g, '').trim();
+                    chatInput.value = `Analyze market patterns and trading signals from ${periodName} period and explain the key characteristics of that era`;
+                    chatInput.focus();
+                    autoResize();
+                    
+                    // Hide dropdown after selection
+                    const dropdown = this.closest('.dropdown');
+                    if (dropdown) {
+                        const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+                        dropdownMenu.style.opacity = '0';
+                        dropdownMenu.style.visibility = 'hidden';
+                    }
+                });
+            });
+
+            // Improve dropdown stability for all dropdowns
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                const dropdownMenu = dropdown.querySelector('.dropdown-menu');
                 let hoverTimeout;
                 
                 dropdown.addEventListener('mouseenter', function() {
@@ -1471,7 +1532,7 @@
                         dropdownMenu.style.visibility = 'hidden';
                     }, 100);
                 });
-            }
+            });
             
             // Auto-resize textarea
             function autoResize() {
