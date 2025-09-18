@@ -454,64 +454,138 @@
             margin-top: 0.25rem;
         }
 
-        /* Natural Language Results */
-        .nl-results {
+        /* Chat Interface */
+        .chat-interface {
             padding: 4rem 0;
             background: linear-gradient(135deg, #1a2332 0%, #0f1419 100%);
         }
 
-        .results-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+        .chat-container {
+            max-width: 800px;
+            margin: 2rem auto 0;
         }
 
-        .query-explanation {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-message {
+            align-items: flex-end;
+        }
+
+        .ai-message {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 1.5rem;
             border-radius: 16px;
-            padding: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        .explanation-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .explanation-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #dc2626;
-            margin-bottom: 0.5rem;
-        }
-
-        .user-query {
+        .user-message .message-content {
             background: rgba(220, 38, 38, 0.1);
-            border-left: 3px solid #dc2626;
-            padding: 1rem;
-            border-radius: 8px;
-            font-style: italic;
-            margin-bottom: 1.5rem;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #ffffff;
         }
 
-        .explanation-steps {
-            list-style: none;
+        .ai-message .message-content {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #000000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .explanation-steps li {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            color: #b8c5d6;
+        /* Comparison Table */
+        .comparison-section {
+            padding: 4rem 0;
+            background: #ffffff;
+            color: #000000;
         }
 
-        .explanation-steps li:last-child {
-            border-bottom: none;
+        .comparison-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #000000;
         }
 
-        .step-number {
+        .comparison-section .highlight {
             color: #dc2626;
+        }
+
+        .comparison-table {
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th {
+            background: #1e3a8a;
+            color: #ffffff;
+            padding: 1.25rem;
+            text-align: center;
             font-weight: 600;
-            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .comparison-table th:first-child {
+            background: #1e3a8a;
+        }
+
+        .comparison-table th:nth-child(2) {
+            background: #1e3a8a;
+        }
+
+        .comparison-table th:nth-child(3) {
+            background: #dc2626;
+        }
+
+        .comparison-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .comparison-table td:first-child {
+            background: rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .comparison-table td:nth-child(2) {
+            background: rgba(30, 58, 138, 0.05);
+            color: #1e3a8a;
+        }
+
+        .comparison-table td:nth-child(3) {
+            background: rgba(220, 38, 38, 0.05);
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
         }
 
         @keyframes pulse {
@@ -738,8 +812,16 @@
                 grid-template-columns: 1fr;
             }
 
-            .results-container {
-                grid-template-columns: 1fr;
+            .message-content {
+                max-width: 95%;
+            }
+
+            .comparison-table {
+                overflow-x: scroll;
+            }
+
+            .comparison-section h2 {
+                font-size: 2rem;
             }
 
             .search-suggestions {
@@ -857,49 +939,100 @@
 
 
 
-        <section class="nl-results" id="explainability">
+        <section class="chat-interface" id="explainability">
             <div class="container">
-                <h2><span class="highlight">Explainable</span> AI Reasoning</h2>
-                <p>Transparent, step-by-step explanations for every insight and recommendation</p>
+                <h2><span class="highlight">AI Chat</span> Interface</h2>
+                <p>Real-time responses to your natural language trading questions</p>
 
-                <div class="results-container">
-                    <div class="query-explanation">
-                        <div class="explanation-header">
-                            <h3 class="explanation-title">Query Analysis</h3>
+                <div class="chat-container">
+                    <div class="chat-messages">
+                        <div class="message user-message">
+                            <div class="message-content">
+                                Show me AAPL patterns similar to the 2008 financial crisis
+                            </div>
                         </div>
                         
-                        <div class="user-query">
-                            "Show me AAPL patterns similar to the 2008 financial crisis"
+                        <div class="message ai-message">
+                            <div class="message-content">
+                                Based on my analysis of AAPL's price action during the 2008 financial crisis, I've identified several key patterns and similar historical occurrences:
+                                
+                                <br><br><strong>2008 Crisis Pattern Analysis:</strong>
+                                <br>• Peak-to-trough decline: -60% (from $28.95 to $11.20)
+                                <br>• Duration of decline: 8 months (Jan 2008 - Mar 2009)
+                                <br>• High volatility period with multiple false bottoms
+                                <br>• Recovery took 24 months to reach new highs
+                                
+                                <br><br><strong>Similar Historical Patterns Found:</strong>
+                                <br>1. <strong>Dot-com Crash (2000-2002):</strong> -80% decline, 31-month recovery
+                                <br>2. <strong>COVID-19 Crash (Mar 2020):</strong> -32% decline, 5-month recovery
+                                <br>3. <strong>1987 Black Monday:</strong> -47% decline, 18-month recovery
+                                
+                                <br><br><strong>Current Market Context:</strong>
+                                <br>Based on these historical patterns, similar market stress indicators would include VIX above 40, credit spreads widening, and institutional selling pressure. The recovery timeline typically correlates with Federal Reserve policy responses and broader economic stabilization measures.
+                            </div>
                         </div>
-
-                        <ul class="explanation-steps">
-                            <li><span class="step-number">1.</span> Analyzed AAPL price data from 2007-2009 period</li>
-                            <li><span class="step-number">2.</span> Identified key pattern characteristics: -50% drawdown, high volatility</li>
-                            <li><span class="step-number">3.</span> Searched historical database for similar volatility signatures</li>
-                            <li><span class="step-number">4.</span> Found 7 matching patterns across different time periods</li>
-                            <li><span class="step-number">5.</span> Calculated average recovery time: 18 months</li>
-                            <li><span class="step-number">6.</span> Applied current market context and risk factors</li>
-                        </ul>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <div class="query-explanation">
-                        <div class="explanation-header">
-                            <h3 class="explanation-title">Data Sources</h3>
-                        </div>
-                        
-                        <div class="user-query">
-                            Historical data points used in this analysis
-                        </div>
-
-                        <ul class="explanation-steps">
-                            <li><span class="step-number">•</span> NYSE historical data: 1970-2024 (54 years)</li>
-                            <li><span class="step-number">•</span> NASDAQ composite data: 1971-2024</li>
-                            <li><span class="step-number">•</span> VIX volatility index: 1990-2024</li>
-                            <li><span class="step-number">•</span> Federal Reserve economic data</li>
-                            <li><span class="step-number">•</span> Corporate earnings reports: 10-K, 10-Q filings</li>
-                            <li><span class="step-number">•</span> Real-time market microstructure data</li>
-                        </ul>
-                    </div>
+        <!-- Comparison Table Section -->
+        <section class="comparison-section">
+            <div class="container">
+                <h2>GPT-5 vs. <span class="highlight">LiveTrader.ai</span></h2>
+                
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>GPT-5</th>
+                                <th>LiveTrader.ai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Core Purpose</td>
+                                <td>General-purpose LLM</td>
+                                <td>Finance-focused Historical Copilot</td>
+                            </tr>
+                            <tr>
+                                <td>Data Memory</td>
+                                <td>Broad knowledge, no live markets</td>
+                                <td>20-30 yrs cross-market history in AWS</td>
+                            </tr>
+                            <tr>
+                                <td>Pattern Recognition</td>
+                                <td>Explains finance concepts</td>
+                                <td>Finds motifs, cycles, regimes</td>
+                            </tr>
+                            <tr>
+                                <td>Explainability</td>
+                                <td>Textual rationales (may hallucinate)</td>
+                                <td>Evidence cards: dates, stats, analogs</td>
+                            </tr>
+                            <tr>
+                                <td>Autonomy</td>
+                                <td>Reactive answers</td>
+                                <td>Proactive scans, alerts, monitoring</td>
+                            </tr>
+                            <tr>
+                                <td>Compliance</td>
+                                <td>No audit trail</td>
+                                <td>Immutable storage, versioning, logs</td>
+                            </tr>
+                            <tr>
+                                <td>Integration</td>
+                                <td>General APIs</td>
+                                <td>Broker/bank APIs, SDKs, enterprise-ready</td>
+                            </tr>
+                            <tr>
+                                <td>Value Add</td>
+                                <td>Broad intelligence</td>
+                                <td>Predictive, explainable financial foresight</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
