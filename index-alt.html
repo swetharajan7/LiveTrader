@@ -188,15 +188,17 @@
         .hero {
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             position: relative;
             padding-top: 80px;
+            padding-bottom: 4rem;
         }
 
         .hero-content {
             text-align: center;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .hero h1 {
@@ -454,21 +456,15 @@
             margin-top: 0.25rem;
         }
 
-        /* Chat Interface */
-        .chat-interface {
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #1a2332 0%, #0f1419 100%);
-        }
-
-        .chat-container {
-            max-width: 800px;
-            margin: 2rem auto 0;
-        }
-
+        /* Chat Messages in Hero */
         .chat-messages {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .message {
@@ -933,18 +929,8 @@
                             <div class="suggestion-chip">Find similar patterns to GameStop squeeze</div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-
-
-        <section class="chat-interface" id="explainability">
-            <div class="container">
-                <h2><span class="highlight">AI Chat</span> Interface</h2>
-                <p>Real-time responses to your natural language trading questions</p>
-
-                <div class="chat-container">
+                    <!-- Integrated Chat Interface -->
                     <div class="chat-messages">
                         <div class="message user-message">
                             <div class="message-content">
@@ -971,10 +957,40 @@
                                 <br>Based on these historical patterns, similar market stress indicators would include VIX above 40, credit spreads widening, and institutional selling pressure. The recovery timeline typically correlates with Federal Reserve policy responses and broader economic stabilization measures.
                             </div>
                         </div>
+
+                        <div class="message user-message">
+                            <div class="message-content">
+                                What sectors performed best during high inflation periods?
+                            </div>
+                        </div>
+                        
+                        <div class="message ai-message">
+                            <div class="message-content">
+                                During high inflation periods (CPI > 6%), historical analysis shows clear sector performance patterns:
+                                
+                                <br><br><strong>Top Performing Sectors:</strong>
+                                <br>1. <strong>Energy (+18.2% avg):</strong> Oil, gas, and renewable energy companies benefit from commodity price increases
+                                <br>2. <strong>Real Estate (+12.7% avg):</strong> REITs and property companies hedge against currency devaluation
+                                <br>3. <strong>Materials (+11.4% avg):</strong> Mining, metals, and industrial materials see pricing power
+                                <br>4. <strong>Financials (+8.9% avg):</strong> Banks benefit from rising interest rates and loan spreads
+                                
+                                <br><br><strong>Underperforming Sectors:</strong>
+                                <br>• Technology (-8.3% avg): High P/E ratios compressed by rising rates
+                                <br>• Consumer Discretionary (-6.1% avg): Reduced spending power affects demand
+                                <br>• Utilities (-4.2% avg): Fixed-income characteristics hurt by rate increases
+                                
+                                <br><br><strong>Historical Context:</strong>
+                                <br>Analysis covers 1970s stagflation, early 1980s, and 2021-2022 periods. Energy sector showed 89% win rate during inflation spikes above 7%.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
+
+
+
 
         <!-- Comparison Table Section -->
         <section class="comparison-section">
