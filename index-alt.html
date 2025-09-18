@@ -105,56 +105,79 @@
             color: #dc2626;
         }
 
-        /* Market Ticker */
-        .market-ticker {
+        /* Market Toggles */
+        .market-toggles {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 25px;
-            padding: 0.5rem 1.5rem;
+            padding: 0.5rem;
             backdrop-filter: blur(10px);
         }
 
-        .ticker-item {
+        .toggle-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .market-toggle {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 80px;
-        }
-
-        .ticker-symbol {
-            font-size: 0.7rem;
-            color: #b8c5d6;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .ticker-price {
-            font-size: 0.85rem;
+            gap: 0.25rem;
+            padding: 0.5rem 0.75rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
             color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 85px;
+            font-family: inherit;
+        }
+
+        .market-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(220, 38, 38, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .market-toggle.active {
+            background: rgba(220, 38, 38, 0.2);
+            border-color: #dc2626;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .toggle-symbol {
+            font-size: 0.7rem;
             font-weight: 600;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+
+        .toggle-price {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
             font-family: 'Courier New', monospace;
         }
 
-        .ticker-change {
+        .toggle-change {
             font-size: 0.65rem;
             font-weight: 500;
-            margin-top: 0.1rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
         }
 
-        .ticker-change.positive {
-            color: #00ff88;
+        .toggle-change.positive {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
         }
 
-        .ticker-change.negative {
-            color: #ff6b6b;
-        }
-
-        .ticker-loading {
-            color: #b8c5d6;
-            font-size: 0.7rem;
+        .toggle-change.negative {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
         }
 
         .dropdown-menu {
@@ -229,7 +252,7 @@
             color: #1f2937 !important;
         }
 
-        .explainability-menu {
+        .search-menu {
             min-width: 200px;
         }
 
@@ -1192,7 +1215,7 @@
                 gap: 1rem;
             }
 
-            .market-ticker {
+            .market-toggles {
                 display: none;
             }
 
@@ -1238,10 +1261,9 @@
             <div class="nav-left">
                 <a href="index.html" class="logo">LiveTrader.ai</a>
                 <ul class="nav-links">
-                    <li><a href="#search">Search</a></li>
                     <li class="dropdown">
-                        <a href="#explainability" class="dropdown-toggle">Explainability ▼</a>
-                        <div class="dropdown-menu explainability-menu">
+                        <a href="#search" class="dropdown-toggle">Search ▼</a>
+                        <div class="dropdown-menu search-menu">
                             <a href="#" class="dropdown-period">1️⃣ Current</a>
                             <a href="#" class="dropdown-period">2️⃣ 2015-2025</a>
                             <a href="#" class="dropdown-period">3️⃣ 2005-2015</a>
@@ -1249,6 +1271,7 @@
                             <a href="#" class="dropdown-period">5️⃣ Before 1995</a>
                         </div>
                     </li>
+                    <li><a href="#explainability">Explainability</a></li>
                     <li class="dropdown">
                         <a href="#patterns" class="dropdown-toggle">Patterns ▼</a>
                         <div class="dropdown-menu patterns-menu">
@@ -1263,36 +1286,38 @@
                 </ul>
             </div>
             
-            <div class="market-ticker" id="marketTicker">
-                <div class="ticker-item">
-                    <div class="ticker-symbol">NASDAQ</div>
-                    <div class="ticker-price" id="nasdaq-price">Loading...</div>
-                    <div class="ticker-change" id="nasdaq-change">--</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-symbol">S&P 500</div>
-                    <div class="ticker-price" id="sp500-price">Loading...</div>
-                    <div class="ticker-change" id="sp500-change">--</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-symbol">DOW 30</div>
-                    <div class="ticker-price" id="dow-price">Loading...</div>
-                    <div class="ticker-change" id="dow-change">--</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-symbol">GOLD</div>
-                    <div class="ticker-price" id="gold-price">Loading...</div>
-                    <div class="ticker-change" id="gold-change">--</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-symbol">BTC</div>
-                    <div class="ticker-price" id="btc-price">Loading...</div>
-                    <div class="ticker-change" id="btc-change">--</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-symbol">ETH</div>
-                    <div class="ticker-price" id="eth-price">Loading...</div>
-                    <div class="ticker-change" id="eth-change">--</div>
+            <div class="market-toggles" id="marketToggles">
+                <div class="toggle-group">
+                    <button class="market-toggle active" data-symbol="NASDAQ" onclick="toggleMarket(this)">
+                        <span class="toggle-symbol">NASDAQ</span>
+                        <span class="toggle-price" id="nasdaq-price">15,234.56</span>
+                        <span class="toggle-change positive" id="nasdaq-change">+1.23%</span>
+                    </button>
+                    <button class="market-toggle" data-symbol="SP500" onclick="toggleMarket(this)">
+                        <span class="toggle-symbol">S&P 500</span>
+                        <span class="toggle-price" id="sp500-price">4,567.89</span>
+                        <span class="toggle-change positive" id="sp500-change">+0.89%</span>
+                    </button>
+                    <button class="market-toggle" data-symbol="DOW" onclick="toggleMarket(this)">
+                        <span class="toggle-symbol">DOW 30</span>
+                        <span class="toggle-price" id="dow-price">34,567.12</span>
+                        <span class="toggle-change negative" id="dow-change">-0.45%</span>
+                    </button>
+                    <button class="market-toggle" data-symbol="GOLD" onclick="toggleMarket(this)">
+                        <span class="toggle-symbol">GOLD</span>
+                        <span class="toggle-price" id="gold-price">$1,987.45</span>
+                        <span class="toggle-change positive" id="gold-change">+0.67%</span>
+                    </button>
+                    <button class="market-toggle" data-symbol="BTC" onclick="toggleMarket(this)">
+                        <span class="toggle-symbol">BITCOIN</span>
+                        <span class="toggle-price" id="btc-price">$43,567.89</span>
+                        <span class="toggle-change positive" id="btc-change">+2.34%</span>
+                    </button>
+                    <button class="market-toggle" data-symbol="ETH" onclick="toggleMarket(this)">
+                        <span class="toggle-symbol">ETHEREUM</span>
+                        <span class="toggle-price" id="eth-price">$2,987.65</span>
+                        <span class="toggle-change positive" id="eth-change">+1.89%</span>
+                    </button>
                 </div>
             </div>
             
@@ -1573,12 +1598,37 @@
         // Initial update
         updateNYCTime();
 
-        // Market Ticker Functions
-        async function updateMarketTicker() {
+        // Market Toggle Functions
+        function toggleMarket(button) {
+            // Remove active class from all toggles
+            document.querySelectorAll('.market-toggle').forEach(toggle => {
+                toggle.classList.remove('active');
+            });
+            
+            // Add active class to clicked toggle
+            button.classList.add('active');
+            
+            // Get the selected market symbol
+            const symbol = button.dataset.symbol;
+            console.log(`Selected market: ${symbol}`);
+            
+            // Update selected market display
+            updateSelectedMarket(symbol);
+        }
+
+        function updateSelectedMarket(symbol) {
+            // Trigger custom event for market selection
+            const event = new CustomEvent('marketToggleChanged', {
+                detail: { symbol: symbol }
+            });
+            window.dispatchEvent(event);
+        }
+
+        async function updateMarketToggles() {
             const tickers = [
-                { symbol: 'QQQ', id: 'nasdaq', name: 'NASDAQ' },
-                { symbol: 'SPY', id: 'sp500', name: 'S&P 500' },
-                { symbol: 'DIA', id: 'dow', name: 'DOW 30' },
+                { symbol: 'IXIC', id: 'nasdaq', name: 'NASDAQ' },
+                { symbol: 'SPX', id: 'sp500', name: 'S&P 500' },
+                { symbol: 'DJI', id: 'dow', name: 'DOW 30' },
                 { symbol: 'GLD', id: 'gold', name: 'GOLD' },
                 { symbol: 'BTC-USD', id: 'btc', name: 'BTC' },
                 { symbol: 'ETH-USD', id: 'eth', name: 'ETH' }
@@ -1586,11 +1636,44 @@
 
             for (const ticker of tickers) {
                 try {
-                    await updateTickerPrice(ticker);
+                    await updateTogglePrice(ticker);
                 } catch (error) {
                     console.warn(`Failed to update ${ticker.name}:`, error);
-                    updateTickerError(ticker.id);
+                    updateToggleError(ticker.id);
                 }
+            }
+        }
+
+        async function updateTogglePrice(ticker) {
+            // Using market data manager if available
+            if (window.marketDataManager) {
+                try {
+                    const quote = await window.marketDataManager.getRealTimeQuote(ticker.symbol);
+                    updateToggleDisplay(ticker.id, quote.price, quote.change, quote.changePercent);
+                    return;
+                } catch (error) {
+                    console.warn(`Market data manager failed for ${ticker.symbol}:`, error);
+                }
+            }
+            
+            // Fallback to demo data
+            updateToggleDemo(ticker);
+        }
+
+        function updateToggleDemo(ticker) {
+            // Demo data for when real API is not available
+            const demoPrices = {
+                'nasdaq': { price: '15,234.56', change: 1.23 },
+                'sp500': { price: '4,567.89', change: 0.89 },
+                'dow': { price: '34,567.12', change: -0.45 },
+                'gold': { price: '$1,987.45', change: 0.67 },
+                'btc': { price: '$43,567.89', change: 2.34 },
+                'eth': { price: '$2,987.65', change: 1.89 }
+            };
+            
+            const demo = demoPrices[ticker.id];
+            if (demo) {
+                updateToggleDisplay(ticker.id, demo.price, demo.change, demo.change);
             }
         }
 
@@ -1647,9 +1730,9 @@
             document.getElementById(`${tickerId}-change`).textContent = '--';
         }
 
-        // Update market ticker every 30 seconds
-        updateMarketTicker();
-        setInterval(updateMarketTicker, 30000);
+        // Update market toggles every 30 seconds
+        updateMarketToggles();
+        setInterval(updateMarketToggles, 30000);
         
         // Chat functionality
         document.addEventListener('DOMContentLoaded', function() {
