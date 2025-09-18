@@ -601,6 +601,43 @@
             opacity: 0.7;
         }
 
+        /* API Response Formatting */
+        .ai-message .message-content strong {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .ai-message .message-content br {
+            line-height: 1.8;
+        }
+
+        .loading-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 2px;
+        }
+
+        .loading-dots span {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #dc2626;
+            animation: loading 1.4s ease-in-out infinite both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
         /* Comparison Table */
         .comparison-section {
             padding: 4rem 0;
@@ -1000,10 +1037,9 @@
             <div class="nav-left">
                 <a href="index.html" class="logo">LiveTrader.ai</a>
                 <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#patterns">Patterns</a></li>
                     <li><a href="#search">Search</a></li>
                     <li><a href="#explainability">Explainability</a></li>
+                    <li><a href="#patterns">Patterns</a></li>
                 </ul>
             </div>
             <div class="nyc-time-toggle" onclick="toggleTimeZone()">
@@ -1338,11 +1374,8 @@
                 // Show typing indicator
                 showTypingIndicator();
                 
-                // Simulate AI response (replace with actual backend call)
-                setTimeout(() => {
-                    hideTypingIndicator();
-                    addMessage('I\'m ready to analyze market patterns and historical data. Please connect me to your backend to provide detailed insights.', 'ai');
-                }, 1500);
+                // Connect to Alpha Vantage API
+                analyzeWithAlphaVantage(message);
             }
             
             function addMessage(content, type) {
@@ -1378,6 +1411,217 @@
                     sendMessage();
                 }
             });
+
+            // Alpha Vantage API Integration
+            const ALPHA_VANTAGE_API_KEY = 'YOUR_API_KEY_HERE'; // Replace with your actual API key
+            const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
+
+            async function analyzeWithAlphaVantage(query) {
+                try {
+                    // Extract stock symbol from query
+                    const symbol = extractStockSymbol(query);
+                    
+                    if (symbol) {
+                        // Fetch real market data
+                        const marketData = await fetchMarketData(symbol);
+                        const technicalData = await fetchTechnicalIndicators(symbol);
+                        
+                        // Generate intelligent response
+                        const response = generateIntelligentResponse(query, symbol, marketData, technicalData);
+                        
+                        hideTypingIndicator();
+                        addMessage(response, 'ai');
+                    } else {
+                        // Handle general trading questions
+                        const response = handleGeneralTradingQuery(query);
+                        hideTypingIndicator();
+                        addMessage(response, 'ai');
+                    }
+                } catch (error) {
+                    console.error('Alpha Vantage API Error:', error);
+                    hideTypingIndicator();
+                    addMessage('I encountered an issue fetching market data. Please check your API connection and try again.', 'ai');
+                }
+            }
+
+            function extractStockSymbol(query) {
+                // Common stock symbols pattern matching
+                const symbolPatterns = [
+                    /\b([A-Z]{1,5})\b/g, // Basic symbol pattern
+                    /\b(AAPL|MSFT|GOOGL|AMZN|TSLA|META|NVDA|AMD|INTC|CRM|NFLX|DIS|BA|GE|F|GM|JPM|BAC|WFC|GS|MS|V|MA|PG|JNJ|KO|PFE|MRK|XOM|CVX|SPY|QQQ|IWM|VTI|VOO)\b/gi
+                ];
+                
+                for (let pattern of symbolPatterns) {
+                    const matches = query.match(pattern);
+                    if (matches && matches.length > 0) {
+                        return matches[0].toUpperCase();
+                    }
+                }
+                return null;
+            }
+
+            async function fetchMarketData(symbol) {
+                const url = `${ALPHA_VANTAGE_BASE_URL}?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data['Error Message']) {
+                    throw new Error('Invalid symbol or API limit reached');
+                }
+                
+                return data;
+            }
+
+            async function fetchTechnicalIndicators(symbol) {
+                const indicators = {};
+                
+                try {
+                    // Fetch RSI
+                    const rsiUrl = `${ALPHA_VANTAGE_BASE_URL}?function=RSI&symbol=${symbol}&interval=daily&time_period=14&series_type=close&apikey=${ALPHA_VANTAGE_API_KEY}`;
+                    const rsiResponse = await fetch(rsiUrl);
+                    const rsiData = await rsiResponse.json();
+                    indicators.rsi = rsiData;
+
+                    // Fetch MACD
+                    const macdUrl = `${ALPHA_VANTAGE_BASE_URL}?function=MACD&symbol=${symbol}&interval=daily&series_type=close&apikey=${ALPHA_VANTAGE_API_KEY}`;
+                    const macdResponse = await fetch(macdUrl);
+                    const macdData = await macdResponse.json();
+                    indicators.macd = macdData;
+
+                    // Fetch Bollinger Bands
+                    const bbUrl = `${ALPHA_VANTAGE_BASE_URL}?function=BBANDS&symbol=${symbol}&interval=daily&time_period=20&series_type=close&apikey=${ALPHA_VANTAGE_API_KEY}`;
+                    const bbResponse = await fetch(bbUrl);
+                    const bbData = await bbResponse.json();
+                    indicators.bollinger = bbData;
+
+                } catch (error) {
+                    console.warn('Some technical indicators failed to load:', error);
+                }
+                
+                return indicators;
+            }
+
+            function generateIntelligentResponse(query, symbol, marketData, technicalData) {
+                const timeSeries = marketData['Time Series (Daily)'];
+                if (!timeSeries) {
+                    return `I couldn't fetch current data for ${symbol}. Please verify the symbol is correct.`;
+                }
+
+                const dates = Object.keys(timeSeries).sort().reverse();
+                const latestDate = dates[0];
+                const latestData = timeSeries[latestDate];
+                const previousData = timeSeries[dates[1]];
+
+                const currentPrice = parseFloat(latestData['4. close']);
+                const previousPrice = parseFloat(previousData['4. close']);
+                const priceChange = currentPrice - previousPrice;
+                const percentChange = ((priceChange / previousPrice) * 100).toFixed(2);
+
+                let response = `<strong>${symbol} Analysis (${latestDate})</strong><br><br>`;
+                response += `<strong>Current Price:</strong> $${currentPrice.toFixed(2)}<br>`;
+                response += `<strong>Change:</strong> ${priceChange >= 0 ? '+' : ''}$${priceChange.toFixed(2)} (${percentChange}%)<br>`;
+                response += `<strong>Volume:</strong> ${parseInt(latestData['5. volume']).toLocaleString()}<br><br>`;
+
+                // Pattern analysis based on recent price action
+                const patternAnalysis = analyzePatterns(timeSeries, dates.slice(0, 20));
+                response += `<strong>Pattern Analysis:</strong><br>${patternAnalysis}<br><br>`;
+
+                // Technical indicators
+                if (technicalData.rsi && technicalData.rsi['Technical Analysis: RSI']) {
+                    const rsiData = technicalData.rsi['Technical Analysis: RSI'];
+                    const latestRSI = Object.values(rsiData)[0];
+                    if (latestRSI) {
+                        const rsiValue = parseFloat(latestRSI['RSI']).toFixed(2);
+                        response += `<strong>RSI (14):</strong> ${rsiValue} - `;
+                        if (rsiValue > 70) response += 'Overbought territory<br>';
+                        else if (rsiValue < 30) response += 'Oversold territory<br>';
+                        else response += 'Neutral zone<br>';
+                    }
+                }
+
+                // Trading recommendation
+                response += `<br><strong>Trading Insight:</strong><br>`;
+                response += generateTradingInsight(query, currentPrice, percentChange, patternAnalysis);
+
+                return response;
+            }
+
+            function analyzePatterns(timeSeries, recentDates) {
+                const prices = recentDates.map(date => parseFloat(timeSeries[date]['4. close']));
+                const highs = recentDates.map(date => parseFloat(timeSeries[date]['2. high']));
+                const lows = recentDates.map(date => parseFloat(timeSeries[date]['3. low']));
+
+                // Simple pattern detection
+                const trend = prices[0] > prices[prices.length - 1] ? 'upward' : 'downward';
+                const volatility = calculateVolatility(prices);
+                
+                let analysis = `Recent ${recentDates.length}-day trend is ${trend}. `;
+                
+                if (volatility > 0.05) {
+                    analysis += 'High volatility detected - potential breakout pattern forming.';
+                } else if (volatility < 0.02) {
+                    analysis += 'Low volatility - consolidation pattern, watch for breakout.';
+                } else {
+                    analysis += 'Moderate volatility - normal price action.';
+                }
+
+                // Check for potential support/resistance
+                const maxPrice = Math.max(...highs);
+                const minPrice = Math.min(...lows);
+                const currentPrice = prices[0];
+                
+                if (currentPrice > maxPrice * 0.95) {
+                    analysis += ' Price near resistance level.';
+                } else if (currentPrice < minPrice * 1.05) {
+                    analysis += ' Price near support level.';
+                }
+
+                return analysis;
+            }
+
+            function calculateVolatility(prices) {
+                const returns = [];
+                for (let i = 1; i < prices.length; i++) {
+                    returns.push((prices[i-1] - prices[i]) / prices[i]);
+                }
+                const mean = returns.reduce((a, b) => a + b, 0) / returns.length;
+                const variance = returns.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / returns.length;
+                return Math.sqrt(variance);
+            }
+
+            function generateTradingInsight(query, currentPrice, percentChange, patternAnalysis) {
+                let insight = '';
+                
+                if (query.toLowerCase().includes('bullish') || query.toLowerCase().includes('buy')) {
+                    insight = 'For bullish positions, watch for breakout above recent resistance with strong volume confirmation.';
+                } else if (query.toLowerCase().includes('bearish') || query.toLowerCase().includes('sell')) {
+                    insight = 'For bearish positions, look for breakdown below support levels with increasing volume.';
+                } else if (Math.abs(percentChange) > 3) {
+                    insight = 'Significant price movement detected. Consider waiting for consolidation before entering positions.';
+                } else {
+                    insight = 'Current price action suggests range-bound trading. Look for breakout signals before taking directional positions.';
+                }
+                
+                return insight;
+            }
+
+            function handleGeneralTradingQuery(query) {
+                const lowerQuery = query.toLowerCase();
+                
+                if (lowerQuery.includes('pattern') && lowerQuery.includes('recognition')) {
+                    return 'Pattern recognition in trading involves identifying recurring price formations that historically lead to predictable outcomes. Common patterns include triangles, flags, head and shoulders, and double tops/bottoms. Each pattern provides insights into potential future price movements based on market psychology and supply/demand dynamics.';
+                }
+                
+                if (lowerQuery.includes('risk management')) {
+                    return 'Effective risk management is crucial for trading success. Key principles include: 1) Never risk more than 1-2% of your account per trade, 2) Use stop-losses to limit downside, 3) Maintain proper position sizing, 4) Diversify across different assets and timeframes, 5) Keep a trading journal to learn from both wins and losses.';
+                }
+                
+                if (lowerQuery.includes('technical analysis')) {
+                    return 'Technical analysis studies price charts and trading volumes to predict future price movements. Key tools include trend lines, support/resistance levels, moving averages, RSI, MACD, and candlestick patterns. The premise is that all market information is reflected in price, and history tends to repeat itself.';
+                }
+                
+                return 'I can help you analyze specific stocks, explain trading patterns, discuss risk management, or provide insights on technical analysis. Try asking about a specific stock symbol (like AAPL, TSLA, or SPY) or mention a trading pattern you\'d like to learn about.';
+            }
         });
     </script>
 </body>
