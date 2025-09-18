@@ -48,10 +48,11 @@
         }
 
         nav {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
             padding: 1rem 0;
+            gap: 2rem;
         }
 
         .nav-left {
@@ -102,6 +103,58 @@
         .dropdown-toggle:hover,
         .dropdown-toggle:focus {
             color: #dc2626;
+        }
+
+        /* Market Ticker */
+        .market-ticker {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .ticker-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+
+        .ticker-symbol {
+            font-size: 0.7rem;
+            color: #b8c5d6;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .ticker-price {
+            font-size: 0.85rem;
+            color: #ffffff;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .ticker-change {
+            font-size: 0.65rem;
+            font-weight: 500;
+            margin-top: 0.1rem;
+        }
+
+        .ticker-change.positive {
+            color: #00ff88;
+        }
+
+        .ticker-change.negative {
+            color: #ff6b6b;
+        }
+
+        .ticker-loading {
+            color: #b8c5d6;
+            font-size: 0.7rem;
         }
 
         .dropdown-menu {
@@ -1088,10 +1141,19 @@
                 display: none;
             }
 
+            nav {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
             .nav-left {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
+            }
+
+            .market-ticker {
+                display: none;
             }
 
             .nyc-time-toggle {
@@ -1160,6 +1222,40 @@
                     </li>
                 </ul>
             </div>
+            
+            <div class="market-ticker" id="marketTicker">
+                <div class="ticker-item">
+                    <div class="ticker-symbol">NASDAQ</div>
+                    <div class="ticker-price" id="nasdaq-price">Loading...</div>
+                    <div class="ticker-change" id="nasdaq-change">--</div>
+                </div>
+                <div class="ticker-item">
+                    <div class="ticker-symbol">S&P 500</div>
+                    <div class="ticker-price" id="sp500-price">Loading...</div>
+                    <div class="ticker-change" id="sp500-change">--</div>
+                </div>
+                <div class="ticker-item">
+                    <div class="ticker-symbol">DOW 30</div>
+                    <div class="ticker-price" id="dow-price">Loading...</div>
+                    <div class="ticker-change" id="dow-change">--</div>
+                </div>
+                <div class="ticker-item">
+                    <div class="ticker-symbol">GOLD</div>
+                    <div class="ticker-price" id="gold-price">Loading...</div>
+                    <div class="ticker-change" id="gold-change">--</div>
+                </div>
+                <div class="ticker-item">
+                    <div class="ticker-symbol">BTC</div>
+                    <div class="ticker-price" id="btc-price">Loading...</div>
+                    <div class="ticker-change" id="btc-change">--</div>
+                </div>
+                <div class="ticker-item">
+                    <div class="ticker-symbol">ETH</div>
+                    <div class="ticker-price" id="eth-price">Loading...</div>
+                    <div class="ticker-change" id="eth-change">--</div>
+                </div>
+            </div>
+            
             <div class="nyc-time-toggle" onclick="toggleTimeZone()">
                 <div class="american-flag"></div>
                 <div class="nyc-indicator"></div>
@@ -1432,6 +1528,84 @@
         
         // Initial update
         updateNYCTime();
+
+        // Market Ticker Functions
+        async function updateMarketTicker() {
+            const tickers = [
+                { symbol: 'QQQ', id: 'nasdaq', name: 'NASDAQ' },
+                { symbol: 'SPY', id: 'sp500', name: 'S&P 500' },
+                { symbol: 'DIA', id: 'dow', name: 'DOW 30' },
+                { symbol: 'GLD', id: 'gold', name: 'GOLD' },
+                { symbol: 'BTC-USD', id: 'btc', name: 'BTC' },
+                { symbol: 'ETH-USD', id: 'eth', name: 'ETH' }
+            ];
+
+            for (const ticker of tickers) {
+                try {
+                    await updateTickerPrice(ticker);
+                } catch (error) {
+                    console.warn(`Failed to update ${ticker.name}:`, error);
+                    updateTickerError(ticker.id);
+                }
+            }
+        }
+
+        async function updateTickerPrice(ticker) {
+            // Using Alpha Vantage API for stock data
+            if (ticker.symbol.includes('-USD')) {
+                // For crypto, use a different approach or API
+                updateTickerCrypto(ticker);
+            } else {
+                // For stocks/ETFs
+                const url = `${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${ticker.symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data['Global Quote']) {
+                    const quote = data['Global Quote'];
+                    const price = parseFloat(quote['05. price']).toFixed(2);
+                    const change = parseFloat(quote['09. change']).toFixed(2);
+                    const changePercent = parseFloat(quote['10. change percent'].replace('%', '')).toFixed(2);
+                    
+                    updateTickerDisplay(ticker.id, price, change, changePercent);
+                } else {
+                    updateTickerError(ticker.id);
+                }
+            }
+        }
+
+        function updateTickerCrypto(ticker) {
+            // Placeholder for crypto prices - you can integrate with CoinGecko or similar
+            const cryptoPrices = {
+                'BTC-USD': { price: '45,230', change: '+2.3%' },
+                'ETH-USD': { price: '2,890', change: '+1.8%' }
+            };
+            
+            const crypto = cryptoPrices[ticker.symbol];
+            if (crypto) {
+                document.getElementById(`${ticker.id}-price`).textContent = `$${crypto.price}`;
+                const changeElement = document.getElementById(`${ticker.id}-change`);
+                changeElement.textContent = crypto.change;
+                changeElement.className = `ticker-change ${crypto.change.startsWith('+') ? 'positive' : 'negative'}`;
+            }
+        }
+
+        function updateTickerDisplay(tickerId, price, change, changePercent) {
+            document.getElementById(`${tickerId}-price`).textContent = `$${price}`;
+            const changeElement = document.getElementById(`${tickerId}-change`);
+            const changeText = `${change >= 0 ? '+' : ''}${change} (${changePercent}%)`;
+            changeElement.textContent = changeText;
+            changeElement.className = `ticker-change ${change >= 0 ? 'positive' : 'negative'}`;
+        }
+
+        function updateTickerError(tickerId) {
+            document.getElementById(`${tickerId}-price`).textContent = 'Error';
+            document.getElementById(`${tickerId}-change`).textContent = '--';
+        }
+
+        // Update market ticker every 30 seconds
+        updateMarketTicker();
+        setInterval(updateMarketTicker, 30000);
         
         // Chat functionality
         document.addEventListener('DOMContentLoaded', function() {
