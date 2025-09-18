@@ -219,80 +219,116 @@
             color: #b8c5d6;
         }
 
-        /* Natural Language Search */
-        .search-container {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(59, 130, 246, 0.4);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            backdrop-filter: blur(10px);
+        /* Sample Questions */
+        .sample-questions-top {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
-        .search-header {
-            margin-bottom: 1.5rem;
+        .sample-questions-sides {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
         }
 
-        .search-header h3 {
-            font-size: 1.2rem;
-            color: #dc2626;
-            margin-bottom: 0.5rem;
-        }
-
-        .search-header p {
-            font-size: 0.9rem;
-            color: #b8c5d6;
-            margin: 0;
-        }
-
-        .search-box {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 1.2rem 1.5rem;
-            font-size: 1.1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            color: #ffffff;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            border-color: #dc2626;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
-        }
-
-        .search-input::placeholder {
-            color: #7a8a9a;
-        }
-
-        .search-suggestions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .suggestion-chip {
+        .sample-question {
             background: rgba(220, 38, 38, 0.1);
             border: 1px solid rgba(220, 38, 38, 0.3);
             border-radius: 20px;
             padding: 0.5rem 1rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #dc2626;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
         }
 
-        .suggestion-chip:hover {
+        .sample-question:hover {
             background: rgba(220, 38, 38, 0.2);
             transform: translateY(-2px);
+        }
+
+        /* Chat Interface */
+        .chat-interface {
+            max-width: 800px;
+            margin: 3rem auto 0;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 2rem;
+            background: #ffffff;
+        }
+
+        .chat-input-container {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            background: #ffffff;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            background: #f8f9fa;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #000000;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            min-height: 24px;
+            max-height: 120px;
+            line-height: 1.5;
+        }
+
+        .chat-input::placeholder {
+            color: #6b7280;
+        }
+
+        .send-button {
+            background: #dc2626;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .send-button:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+        }
+
+        .send-button:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* Pattern Recognition Dashboard */
@@ -456,18 +492,9 @@
             margin-top: 0.25rem;
         }
 
-        /* Chat Messages in Hero */
-        .chat-messages {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 3rem;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
+        /* Dynamic Chat Messages */
         .message {
+            margin-bottom: 1.5rem;
             display: flex;
             flex-direction: column;
         }
@@ -481,24 +508,48 @@
         }
 
         .message-content {
-            max-width: 80%;
-            padding: 1.5rem;
+            max-width: 85%;
+            padding: 1rem 1.5rem;
             border-radius: 16px;
             font-size: 0.95rem;
             line-height: 1.6;
+            word-wrap: break-word;
         }
 
         .user-message .message-content {
-            background: rgba(220, 38, 38, 0.1);
-            border: 1px solid rgba(220, 38, 38, 0.3);
+            background: #dc2626;
             color: #ffffff;
         }
 
         .ai-message .message-content {
-            background: #ffffff;
+            background: #f8f9fa;
             border: 1px solid rgba(0, 0, 0, 0.1);
             color: #000000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-subtext {
+            font-size: 0.9rem;
+            opacity: 0.7;
         }
 
         /* Comparison Table */
@@ -898,6 +949,13 @@
         <section class="hero" id="home">
             <div class="container">
                 <div class="hero-content">
+                    <!-- Sample Questions Above Title -->
+                    <div class="sample-questions-top">
+                        <div class="sample-question">Find head and shoulders patterns in tech stocks</div>
+                        <div class="sample-question">Compare Tesla volatility to traditional automakers</div>
+                        <div class="sample-question">Show me pre-earnings patterns for FAANG stocks</div>
+                    </div>
+
                     <h1>
                         <span class="highlight">Pattern Recognition</span><br>
                         Trading Intelligence
@@ -906,83 +964,34 @@
                         Ask questions in natural language. Get explainable insights from decades of stock exchange data with real-time pattern recognition for smarter trading decisions.
                     </p>
 
-                    <div class="search-container">
-                        <div class="search-header">
-                            <h3>🤖 Natural Language Trading Assistant</h3>
-                            <p>Ask anything about market patterns, historical data, or trading signals</p>
+                    <!-- Simple Chat Interface -->
+                    <div class="chat-interface">
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be dynamically added here -->
                         </div>
                         
-                        <div class="search-box">
-                            <input 
-                                type="text" 
-                                class="search-input" 
-                                placeholder="e.g., 'Show me AAPL patterns similar to the 2008 financial crisis' or 'What sectors performed best during high inflation periods?'"
-                            >
-                        </div>
-
-                        <div class="search-suggestions">
-                            <div class="suggestion-chip">Find head and shoulders patterns in tech stocks</div>
-                            <div class="suggestion-chip">Compare Tesla volatility to traditional automakers</div>
-                            <div class="suggestion-chip">Show me pre-earnings patterns for FAANG stocks</div>
-                            <div class="suggestion-chip">Identify support levels for S&P 500 during recessions</div>
-                            <div class="suggestion-chip">What happens to gold prices during market crashes?</div>
-                            <div class="suggestion-chip">Find similar patterns to GameStop squeeze</div>
+                        <div class="chat-input-container">
+                            <div class="chat-input-wrapper">
+                                <textarea 
+                                    id="chatInput"
+                                    class="chat-input" 
+                                    placeholder="Ask anything about market patterns, historical data, or trading signals..."
+                                    rows="1"
+                                ></textarea>
+                                <button id="sendButton" class="send-button">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                        <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Integrated Chat Interface -->
-                    <div class="chat-messages">
-                        <div class="message user-message">
-                            <div class="message-content">
-                                Show me AAPL patterns similar to the 2008 financial crisis
-                            </div>
-                        </div>
-                        
-                        <div class="message ai-message">
-                            <div class="message-content">
-                                Based on my analysis of AAPL's price action during the 2008 financial crisis, I've identified several key patterns and similar historical occurrences:
-                                
-                                <br><br><strong>2008 Crisis Pattern Analysis:</strong>
-                                <br>• Peak-to-trough decline: -60% (from $28.95 to $11.20)
-                                <br>• Duration of decline: 8 months (Jan 2008 - Mar 2009)
-                                <br>• High volatility period with multiple false bottoms
-                                <br>• Recovery took 24 months to reach new highs
-                                
-                                <br><br><strong>Similar Historical Patterns Found:</strong>
-                                <br>1. <strong>Dot-com Crash (2000-2002):</strong> -80% decline, 31-month recovery
-                                <br>2. <strong>COVID-19 Crash (Mar 2020):</strong> -32% decline, 5-month recovery
-                                <br>3. <strong>1987 Black Monday:</strong> -47% decline, 18-month recovery
-                                
-                                <br><br><strong>Current Market Context:</strong>
-                                <br>Based on these historical patterns, similar market stress indicators would include VIX above 40, credit spreads widening, and institutional selling pressure. The recovery timeline typically correlates with Federal Reserve policy responses and broader economic stabilization measures.
-                            </div>
-                        </div>
-
-                        <div class="message user-message">
-                            <div class="message-content">
-                                What sectors performed best during high inflation periods?
-                            </div>
-                        </div>
-                        
-                        <div class="message ai-message">
-                            <div class="message-content">
-                                During high inflation periods (CPI > 6%), historical analysis shows clear sector performance patterns:
-                                
-                                <br><br><strong>Top Performing Sectors:</strong>
-                                <br>1. <strong>Energy (+18.2% avg):</strong> Oil, gas, and renewable energy companies benefit from commodity price increases
-                                <br>2. <strong>Real Estate (+12.7% avg):</strong> REITs and property companies hedge against currency devaluation
-                                <br>3. <strong>Materials (+11.4% avg):</strong> Mining, metals, and industrial materials see pricing power
-                                <br>4. <strong>Financials (+8.9% avg):</strong> Banks benefit from rising interest rates and loan spreads
-                                
-                                <br><br><strong>Underperforming Sectors:</strong>
-                                <br>• Technology (-8.3% avg): High P/E ratios compressed by rising rates
-                                <br>• Consumer Discretionary (-6.1% avg): Reduced spending power affects demand
-                                <br>• Utilities (-4.2% avg): Fixed-income characteristics hurt by rate increases
-                                
-                                <br><br><strong>Historical Context:</strong>
-                                <br>Analysis covers 1970s stagflation, early 1980s, and 2021-2022 periods. Energy sector showed 89% win rate during inflation spikes above 7%.
-                            </div>
-                        </div>
+                    <!-- Sample Questions on Sides -->
+                    <div class="sample-questions-sides">
+                        <div class="sample-question">Identify support levels for S&P 500 during recessions</div>
+                        <div class="sample-question">What happens to gold prices during market crashes?</div>
+                        <div class="sample-question">Find similar patterns to GameStop squeeze</div>
                     </div>
                 </div>
             </div>
@@ -1162,24 +1171,102 @@
         // Initial update
         updateNYCTime();
         
-        // Search functionality placeholder
+        // Chat functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.querySelector('.search-input');
-            const suggestionChips = document.querySelectorAll('.suggestion-chip');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const chatMessages = document.getElementById('chatMessages');
+            const sampleQuestions = document.querySelectorAll('.sample-question');
             
-            // Handle suggestion chip clicks
-            suggestionChips.forEach(chip => {
-                chip.addEventListener('click', function() {
-                    searchInput.value = this.textContent;
-                    searchInput.focus();
+            // Show empty state initially
+            showEmptyState();
+            
+            function showEmptyState() {
+                chatMessages.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🤖</div>
+                        <div class="empty-state-text">Ask me anything about market patterns</div>
+                        <div class="empty-state-subtext">I have decades of historical trading data to help you</div>
+                    </div>
+                `;
+            }
+            
+            // Handle sample question clicks
+            sampleQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    chatInput.value = this.textContent;
+                    chatInput.focus();
+                    autoResize();
                 });
             });
             
-            // Handle search input
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    console.log('Search query:', this.value);
-                    // Future: implement actual search functionality
+            // Auto-resize textarea
+            function autoResize() {
+                chatInput.style.height = 'auto';
+                chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+            }
+            
+            chatInput.addEventListener('input', autoResize);
+            
+            // Handle send message
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                // Clear empty state if it exists
+                const emptyState = chatMessages.querySelector('.empty-state');
+                if (emptyState) {
+                    chatMessages.innerHTML = '';
+                }
+                
+                // Add user message
+                addMessage(message, 'user');
+                
+                // Clear input
+                chatInput.value = '';
+                autoResize();
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Simulate AI response (replace with actual backend call)
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addMessage('I\'m ready to analyze market patterns and historical data. Please connect me to your backend to provide detailed insights.', 'ai');
+                }, 1500);
+            }
+            
+            function addMessage(content, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}-message`;
+                messageDiv.innerHTML = `<div class="message-content">${content}</div>`;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message ai-message typing-indicator';
+                typingDiv.innerHTML = '<div class="message-content">Analyzing...</div>';
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function hideTypingIndicator() {
+                const typingIndicator = chatMessages.querySelector('.typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+            
+            // Send button click
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Enter key to send
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
                 }
             });
         });
