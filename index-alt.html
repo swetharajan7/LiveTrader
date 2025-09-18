@@ -1140,11 +1140,11 @@
                     <li class="dropdown">
                         <a href="#explainability" class="dropdown-toggle">Explainability ▼</a>
                         <div class="dropdown-menu explainability-menu">
-                            <a href="#" class="dropdown-period">📅 Current</a>
-                            <a href="#" class="dropdown-period">📅 2015-2025</a>
-                            <a href="#" class="dropdown-period">📅 2005-2015</a>
-                            <a href="#" class="dropdown-period">📅 1995-2005</a>
-                            <a href="#" class="dropdown-period">📅 Before 1995</a>
+                            <a href="#" class="dropdown-period">1️⃣ Current</a>
+                            <a href="#" class="dropdown-period">2️⃣ 2015-2025</a>
+                            <a href="#" class="dropdown-period">3️⃣ 2005-2015</a>
+                            <a href="#" class="dropdown-period">4️⃣ 1995-2005</a>
+                            <a href="#" class="dropdown-period">5️⃣ Before 1995</a>
                         </div>
                     </li>
                     <li class="dropdown">
@@ -1488,7 +1488,7 @@
             dropdownPeriods.forEach(period => {
                 period.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const periodName = this.textContent.replace(/📅/g, '').trim();
+                    const periodName = this.textContent.replace(/[1-5]️⃣/g, '').trim();
                     chatInput.value = `Analyze market patterns and trading signals from ${periodName} period and explain the key characteristics of that era`;
                     chatInput.focus();
                     autoResize();
