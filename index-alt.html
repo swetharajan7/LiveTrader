@@ -99,6 +99,11 @@
             user-select: none;
         }
 
+        .dropdown-toggle:hover,
+        .dropdown-toggle:focus {
+            color: #dc2626;
+        }
+
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -113,9 +118,11 @@
             visibility: hidden;
             margin-top: 0.5rem;
             padding: 0.5rem 0;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
 
-        .dropdown:hover .dropdown-menu {
+        .dropdown:hover .dropdown-menu,
+        .dropdown-menu:hover {
             opacity: 1;
             visibility: visible;
         }
@@ -123,11 +130,12 @@
         .dropdown-category {
             display: block;
             padding: 1rem 1.5rem;
-            color: #374151;
+            color: #1f2937 !important;
             text-decoration: none;
             font-size: 0.95rem;
-            font-weight: 400;
+            font-weight: 500;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background: transparent;
         }
 
         .dropdown-category:last-child {
@@ -135,8 +143,12 @@
         }
 
         .dropdown-category:hover {
-            background: #f3f4f6;
-            color: #374151;
+            background: #f3f4f6 !important;
+            color: #1f2937 !important;
+        }
+
+        .dropdown-category:visited {
+            color: #1f2937 !important;
         }
 
         /* NYC Time Toggle */
@@ -1422,11 +1434,44 @@
                     // Hide dropdown after selection
                     const dropdown = this.closest('.dropdown');
                     if (dropdown) {
-                        dropdown.querySelector('.dropdown-menu').style.opacity = '0';
-                        dropdown.querySelector('.dropdown-menu').style.visibility = 'hidden';
+                        const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+                        dropdownMenu.style.opacity = '0';
+                        dropdownMenu.style.visibility = 'hidden';
                     }
                 });
             });
+
+            // Improve dropdown stability
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            if (dropdown && dropdownMenu) {
+                let hoverTimeout;
+                
+                dropdown.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimeout);
+                    dropdownMenu.style.opacity = '1';
+                    dropdownMenu.style.visibility = 'visible';
+                });
+                
+                dropdown.addEventListener('mouseleave', function() {
+                    hoverTimeout = setTimeout(() => {
+                        dropdownMenu.style.opacity = '0';
+                        dropdownMenu.style.visibility = 'hidden';
+                    }, 100);
+                });
+                
+                dropdownMenu.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimeout);
+                });
+                
+                dropdownMenu.addEventListener('mouseleave', function() {
+                    hoverTimeout = setTimeout(() => {
+                        dropdownMenu.style.opacity = '0';
+                        dropdownMenu.style.visibility = 'hidden';
+                    }, 100);
+                });
+            }
             
             // Auto-resize textarea
             function autoResize() {
