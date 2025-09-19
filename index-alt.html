@@ -371,9 +371,11 @@
             min-height: calc(100vh - 80px);
         }
 
-        .interface-layout {
+        /* GPT-Style Layout */
+        .gpt-layout {
             display: flex;
-            min-height: calc(100vh - 80px);
+            height: calc(100vh - 80px);
+            background: #ffffff;
         }
 
         .hero h1 {
@@ -396,43 +398,448 @@
 
 
 
-        /* Main Chat Area */
-        .main-chat {
+        /* Chat Sidebar */
+        .chat-sidebar {
+            width: 260px;
+            background: #f7f7f8;
+            border-right: 1px solid #e5e5e5;
             display: flex;
             flex-direction: column;
-            min-height: calc(100vh - 80px);
-            background: #ffffff;
-            width: 100%;
+            overflow: hidden;
         }
 
-        .chat-header {
-            padding: 2rem 2rem 1rem 2rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            background: #ffffff;
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
         }
 
-        .header-content {
+        .new-chat-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            color: #374151;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .new-chat-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .alerts-button-sidebar {
+            padding: 0.75rem;
+            background: #dc2626;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .alerts-button-sidebar:hover {
+            background: #b91c1c;
+        }
+
+        .alerts-badge-sidebar {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #fbbf24;
+            color: #000;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            border: 2px solid white;
+        }
+
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .chat-history-item {
+            padding: 0.75rem;
+            margin-bottom: 0.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .chat-history-item:hover {
+            background: #ffffff;
+            border-color: #e5e5e5;
+        }
+
+        .chat-history-item.active {
+            background: #ffffff;
+            border-color: #dc2626;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #111827;
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+        }
+
+        .chat-preview {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .chat-time {
+            font-size: 0.7rem;
+            color: #9ca3af;
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #dc2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: #111827;
+        }
+
+        /* Main Chat Area */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Chat Top Header */
+        .chat-top-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 2rem;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e5e5e5;
+            background: #ffffff;
         }
 
-        .header-text {
+        .chat-title-area h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .chat-subtitle {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem;
+            background: #f9fafb;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        /* Messages Container */
+        .messages-container {
             flex: 1;
+            overflow-y: auto;
+            position: relative;
+            background: #ffffff;
         }
 
-        .chat-header h1 {
+        .messages-wrapper {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-logo {
+            margin-bottom: 1rem;
+        }
+
+        .logo-text {
             font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #000000;
+            color: #dc2626;
         }
 
-        .chat-header p {
-            color: #6b7280;
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .suggestion-btn {
+            padding: 1rem 1.5rem;
+            background: #f9fafb;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            color: #374151;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .suggestion-btn:hover {
+            background: #f3f4f6;
+            border-color: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        /* Chat Messages */
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: #dc2626;
+            color: white;
+        }
+
+        .message.assistant .message-avatar {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .message-content {
+            flex: 1;
+            max-width: 70%;
+        }
+
+        .message.user .message-content {
+            background: #dc2626;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        .message.assistant .message-content {
+            background: #f9fafb;
+            color: #374151;
+            padding: 0.75rem 1rem;
+            border-radius: 18px 18px 18px 4px;
+            border: 1px solid #e5e5e5;
+        }
+
+        /* Scroll to Bottom Button */
+        .scroll-to-bottom {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .scroll-to-bottom:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+        }
+
+        /* Chat Input Area */
+        .chat-input-area {
+            padding: 1rem 2rem 2rem 2rem;
+            background: #ffffff;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .input-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: #f9fafb;
+            border: 1px solid #e5e5e5;
+            border-radius: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .chat-input-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
             font-size: 1rem;
-            margin: 0;
+            line-height: 1.5;
+            color: #111827;
+            min-height: 24px;
+            max-height: 120px;
+        }
+
+        .chat-input-field::placeholder {
+            color: #9ca3af;
+        }
+
+        .send-btn {
+            width: 32px;
+            height: 32px;
+            background: #dc2626;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            background: #b91c1c;
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .input-footer {
+            text-align: center;
+            margin-top: 0.75rem;
+        }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        /* Alerts Panel Overlay */
+        .alerts-panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .alerts-panel-content {
+            width: 500px;
+            max-width: 90vw;
+            max-height: 80vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
         }
 
         /* Alerts Button */
@@ -977,6 +1384,40 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Typing Indicator */
+        .typing-indicator .message-content {
+            padding: 1rem !important;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         /* Message Styling */
         .message {
             margin-bottom: 15px;
@@ -1185,54 +1626,59 @@
                 grid-template-columns: 1fr;
             }
 
-            .interface-layout {
+            .gpt-layout {
                 flex-direction: column;
+                height: auto;
             }
 
-            .chat-header {
-                padding: 1.5rem 1rem 1rem 1rem;
+            .chat-sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e5e5e5;
             }
 
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
+            .chat-history {
+                max-height: 200px;
             }
 
-            .chat-header h1 {
-                font-size: 1.5rem;
+            .sidebar-header {
+                padding: 0.75rem;
             }
 
-            .alerts-button {
-                align-self: flex-start;
+            .new-chat-btn {
                 font-size: 0.8rem;
-                padding: 0.6rem 1rem;
+                padding: 0.6rem 0.8rem;
             }
 
-            .alerts-panel {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 95vw;
-                max-height: 80vh;
-                right: auto;
-                margin-top: 0;
+            .welcome-suggestions {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
             }
 
-            .alerts-text {
-                display: none;
+            .suggestion-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
             }
 
-            .chat-messages {
+            .messages-wrapper {
                 padding: 1rem;
             }
 
-            .chat-input-container {
+            .chat-input-area {
                 padding: 1rem;
             }
 
             .message-content {
-                max-width: 95%;
+                max-width: 85%;
+            }
+
+            .chat-top-header {
+                padding: 1rem;
+            }
+
+            .chat-title-area h2 {
+                font-size: 1.1rem;
             }
 
 
@@ -1350,185 +1796,279 @@
     <main>
         <section class="hero" id="home">
             <div class="full-interface">
-                <div class="interface-layout">
-                    <!-- Main Chat Interface -->
-                    <div class="main-chat">
-                        <div class="chat-header">
-                            <div class="header-content">
-                                <div class="header-text">
-                                    <h1>
-                                        <span class="highlight">Pattern Recognition</span> Trading Intelligence
-                                    </h1>
-                                    <p>Ask questions in natural language about market patterns, historical data, or trading signals</p>
-                                </div>
-                                <div class="header-actions">
-                                    <button class="alerts-button" id="alertsButton" onclick="toggleAlertsPanel()">
-                                        <svg class="bell-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <span class="alerts-badge" id="alertsBadge">3</span>
-                                        <span class="alerts-text">Insights & Alerts</span>
-                                    </button>
-                                </div>
+                <div class="gpt-layout">
+                    <!-- Chat History Sidebar -->
+                    <div class="chat-sidebar">
+                        <div class="sidebar-header">
+                            <button class="new-chat-btn" onclick="startNewChat()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                New Chat
+                            </button>
+                            <button class="alerts-button-sidebar" id="alertsButtonSidebar" onclick="toggleAlertsPanel()">
+                                <svg class="bell-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="alerts-badge-sidebar" id="alertsBadgeSidebar">3</span>
+                            </button>
+                        </div>
+                        
+                        <div class="chat-history">
+                            <div class="chat-history-item active" onclick="loadChat('current')">
+                                <div class="chat-title">Pattern Recognition Analysis</div>
+                                <div class="chat-preview">What patterns are emerging in NASDAQ...</div>
+                                <div class="chat-time">Today</div>
                             </div>
                             
-                            <!-- Alerts Panel (Hidden by default) -->
-                            <div class="alerts-panel" id="alertsPanel" style="display: none;">
-                                <div class="alerts-header">
-                                    <h3>Scheduled Insights & Alerts</h3>
-                                    <button class="close-alerts" onclick="toggleAlertsPanel()">×</button>
-                                </div>
-                                
-                                <div class="alerts-tabs">
-                                    <button class="alert-tab active" data-tab="active">Active Alerts</button>
-                                    <button class="alert-tab" data-tab="schedule">Schedule New</button>
-                                    <button class="alert-tab" data-tab="history">History</button>
-                                </div>
-                                
-                                <div class="alerts-content">
-                                    <!-- Active Alerts Tab -->
-                                    <div class="alert-tab-content active" id="active-tab">
-                                        <div class="alert-item">
-                                            <div class="alert-icon">📈</div>
-                                            <div class="alert-details">
-                                                <div class="alert-title">NASDAQ Pattern Alert</div>
-                                                <div class="alert-description">Ascending triangle formation detected - potential breakout in 2-3 days</div>
-                                                <div class="alert-time">Next check: Today 4:00 PM EST</div>
-                                            </div>
-                                            <div class="alert-actions">
-                                                <button class="alert-action-btn">View</button>
-                                                <button class="alert-action-btn secondary">Edit</button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="alert-item">
-                                            <div class="alert-icon">⚠️</div>
-                                            <div class="alert-details">
-                                                <div class="alert-title">Market Volatility Watch</div>
-                                                <div class="alert-description">VIX above 25 - monitor defensive positions</div>
-                                                <div class="alert-time">Daily at 9:30 AM EST</div>
-                                            </div>
-                                            <div class="alert-actions">
-                                                <button class="alert-action-btn">View</button>
-                                                <button class="alert-action-btn secondary">Edit</button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="alert-item">
-                                            <div class="alert-icon">💰</div>
-                                            <div class="alert-details">
-                                                <div class="alert-title">Gold Price Momentum</div>
-                                                <div class="alert-description">RSI oversold condition - potential reversal opportunity</div>
-                                                <div class="alert-time">Every 4 hours</div>
-                                            </div>
-                                            <div class="alert-actions">
-                                                <button class="alert-action-btn">View</button>
-                                                <button class="alert-action-btn secondary">Edit</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Schedule New Tab -->
-                                    <div class="alert-tab-content" id="schedule-tab">
-                                        <div class="schedule-form">
-                                            <div class="form-group">
-                                                <label>Alert Type</label>
-                                                <select class="form-control">
-                                                    <option>Pattern Recognition Alert</option>
-                                                    <option>Price Movement Alert</option>
-                                                    <option>Technical Indicator Alert</option>
-                                                    <option>Market Sentiment Alert</option>
-                                                    <option>Custom Query Alert</option>
-                                                </select>
-                                            </div>
-                                            
-                                            <div class="form-group">
-                                                <label>Market/Symbol</label>
-                                                <select class="form-control">
-                                                    <option>NASDAQ</option>
-                                                    <option>S&P 500</option>
-                                                    <option>DOW 30</option>
-                                                    <option>Gold</option>
-                                                    <option>Bitcoin</option>
-                                                    <option>Ethereum</option>
-                                                    <option>Custom Symbol</option>
-                                                </select>
-                                            </div>
-                                            
-                                            <div class="form-group">
-                                                <label>Frequency</label>
-                                                <select class="form-control">
-                                                    <option>Real-time</option>
-                                                    <option>Every 15 minutes</option>
-                                                    <option>Hourly</option>
-                                                    <option>Every 4 hours</option>
-                                                    <option>Daily at market open</option>
-                                                    <option>Daily at market close</option>
-                                                    <option>Weekly</option>
-                                                </select>
-                                            </div>
-                                            
-                                            <div class="form-group">
-                                                <label>Alert Condition</label>
-                                                <textarea class="form-control" placeholder="Describe what you want to be alerted about (e.g., 'Notify me when NASDAQ shows a bullish divergence pattern')"></textarea>
-                                            </div>
-                                            
-                                            <div class="form-actions">
-                                                <button class="btn-primary">Create Alert</button>
-                                                <button class="btn-secondary">Save as Template</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- History Tab -->
-                                    <div class="alert-tab-content" id="history-tab">
-                                        <div class="alert-history">
-                                            <div class="history-item">
-                                                <div class="history-date">Today 2:15 PM</div>
-                                                <div class="history-alert">📈 NASDAQ breakout confirmed - 2.3% gain as predicted</div>
-                                                <div class="history-action">Alert triggered successfully</div>
-                                            </div>
-                                            
-                                            <div class="history-item">
-                                                <div class="history-date">Yesterday 4:00 PM</div>
-                                                <div class="history-alert">⚠️ Market volatility increased - VIX at 28.5</div>
-                                                <div class="history-action">Alert sent to 12 brokers</div>
-                                            </div>
-                                            
-                                            <div class="history-item">
-                                                <div class="history-date">Dec 18, 3:30 PM</div>
-                                                <div class="history-alert">💰 Gold RSI reversal - Entry point identified</div>
-                                                <div class="history-action">Alert generated insights</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="chat-history-item" onclick="loadChat('yesterday')">
+                                <div class="chat-title">Market Volatility Discussion</div>
+                                <div class="chat-preview">Explain the VIX spike and its implications...</div>
+                                <div class="chat-time">Yesterday</div>
+                            </div>
+                            
+                            <div class="chat-history-item" onclick="loadChat('week')">
+                                <div class="chat-title">Gold Price Analysis</div>
+                                <div class="chat-preview">RSI indicators showing oversold conditions...</div>
+                                <div class="chat-time">This week</div>
+                            </div>
+                            
+                            <div class="chat-history-item" onclick="loadChat('crypto')">
+                                <div class="chat-title">Crypto Market Trends</div>
+                                <div class="chat-preview">Bitcoin correlation with traditional markets...</div>
+                                <div class="chat-time">Dec 15</div>
+                            </div>
+                            
+                            <div class="chat-history-item" onclick="loadChat('earnings')">
+                                <div class="chat-title">Earnings Season Impact</div>
+                                <div class="chat-preview">How earnings reports affect sector rotation...</div>
+                                <div class="chat-time">Dec 10</div>
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar-footer">
+                            <div class="user-info">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-name">Trader</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Chat Area -->
+                    <div class="chat-main">
+                        <!-- Chat Header -->
+                        <div class="chat-top-header">
+                            <div class="chat-title-area">
+                                <h2 id="currentChatTitle">Pattern Recognition Analysis</h2>
+                                <div class="chat-subtitle">LiveTrader.ai - Where History Meets Intelligence</div>
+                            </div>
+                            <div class="chat-actions">
+                                <button class="action-btn" onclick="shareChat()" title="Share Chat">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button class="action-btn" onclick="clearChat()" title="Clear Chat">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
 
-                        <div class="chat-interface">
-                            <div class="chat-messages" id="chat-messages">
-                                <!-- Messages will be dynamically added here -->
-                                <div id="loading-indicator" style="display: none; text-align: center; padding: 20px;">
-                                    <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #dc2626; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                                    <p style="margin-top: 10px; color: #b8c5d6;">AI is analyzing market patterns...</p>
+                        <!-- Messages Container -->
+                        <div class="messages-container" id="messagesContainer">
+                            <div class="messages-wrapper" id="messagesWrapper">
+                                <!-- Welcome Message -->
+                                <div class="welcome-section">
+                                    <div class="welcome-logo">
+                                        <span class="logo-text">LiveTrader.ai</span>
+                                    </div>
+                                    <div class="welcome-title">How can I help you analyze the markets today?</div>
+                                    <div class="welcome-suggestions">
+                                        <button class="suggestion-btn" onclick="sendSuggestion('What patterns are emerging in NASDAQ this week?')">
+                                            📈 Analyze NASDAQ patterns
+                                        </button>
+                                        <button class="suggestion-btn" onclick="sendSuggestion('Explain the 2008 financial crisis impact on markets')">
+                                            📊 Historical market analysis
+                                        </button>
+                                        <button class="suggestion-btn" onclick="sendSuggestion('What technical indicators suggest for Gold right now?')">
+                                            💰 Gold technical analysis
+                                        </button>
+                                        <button class="suggestion-btn" onclick="sendSuggestion('Compare current market conditions to previous bear markets')">
+                                            🔍 Market comparison
+                                        </button>
+                                    </div>
                                 </div>
+                                
+                                <!-- Messages will be added here dynamically -->
+                                <div id="chatMessages"></div>
                             </div>
                             
-                            <div class="chat-input-container">
-                                <div class="chat-input-wrapper">
+                            <!-- Scroll to bottom button -->
+                            <button class="scroll-to-bottom" id="scrollToBottom" onclick="scrollToBottom()" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M7 13l3 3 7-7M7 6l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="chat-input-area">
+                            <div class="input-container">
+                                <div class="input-wrapper">
                                     <textarea 
                                         id="chatInput"
-                                        class="chat-input" 
-                                        placeholder="Ask anything about market patterns, historical data, or trading signals..."
+                                        class="chat-input-field" 
+                                        placeholder="Message LiveTrader.ai..."
                                         rows="1"
+                                        onkeydown="handleInputKeydown(event)"
+                                        oninput="adjustTextareaHeight(this)"
                                     ></textarea>
-                                    <button id="sendButton" class="send-button">
+                                    <button id="sendButton" class="send-btn" onclick="sendMessage()">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                            <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </button>
+                                </div>
+                                <div class="input-footer">
+                                    <span class="input-hint">LiveTrader.ai can make mistakes. Consider checking important information.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts Panel (Hidden by default) -->
+                    <div class="alerts-panel-overlay" id="alertsPanel" style="display: none;">
+                        <div class="alerts-panel-content">
+                            <div class="alerts-header">
+                                <h3>Scheduled Insights & Alerts</h3>
+                                <button class="close-alerts" onclick="toggleAlertsPanel()">×</button>
+                            </div>
+                            
+                            <div class="alerts-tabs">
+                                <button class="alert-tab active" data-tab="active">Active Alerts</button>
+                                <button class="alert-tab" data-tab="schedule">Schedule New</button>
+                                <button class="alert-tab" data-tab="history">History</button>
+                            </div>
+                            
+                            <div class="alerts-content">
+                                <!-- Active Alerts Tab -->
+                                <div class="alert-tab-content active" id="active-tab">
+                                    <div class="alert-item">
+                                        <div class="alert-icon">📈</div>
+                                        <div class="alert-details">
+                                            <div class="alert-title">NASDAQ Pattern Alert</div>
+                                            <div class="alert-description">Ascending triangle formation detected - potential breakout in 2-3 days</div>
+                                            <div class="alert-time">Next check: Today 4:00 PM EST</div>
+                                        </div>
+                                        <div class="alert-actions">
+                                            <button class="alert-action-btn">View</button>
+                                            <button class="alert-action-btn secondary">Edit</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert-item">
+                                        <div class="alert-icon">⚠️</div>
+                                        <div class="alert-details">
+                                            <div class="alert-title">Market Volatility Watch</div>
+                                            <div class="alert-description">VIX above 25 - monitor defensive positions</div>
+                                            <div class="alert-time">Daily at 9:30 AM EST</div>
+                                        </div>
+                                        <div class="alert-actions">
+                                            <button class="alert-action-btn">View</button>
+                                            <button class="alert-action-btn secondary">Edit</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert-item">
+                                        <div class="alert-icon">💰</div>
+                                        <div class="alert-details">
+                                            <div class="alert-title">Gold Price Momentum</div>
+                                            <div class="alert-description">RSI oversold condition - potential reversal opportunity</div>
+                                            <div class="alert-time">Every 4 hours</div>
+                                        </div>
+                                        <div class="alert-actions">
+                                            <button class="alert-action-btn">View</button>
+                                            <button class="alert-action-btn secondary">Edit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Schedule New Tab -->
+                                <div class="alert-tab-content" id="schedule-tab">
+                                    <div class="schedule-form">
+                                        <div class="form-group">
+                                            <label>Alert Type</label>
+                                            <select class="form-control">
+                                                <option>Pattern Recognition Alert</option>
+                                                <option>Price Movement Alert</option>
+                                                <option>Technical Indicator Alert</option>
+                                                <option>Market Sentiment Alert</option>
+                                                <option>Custom Query Alert</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Market/Symbol</label>
+                                            <select class="form-control">
+                                                <option>NASDAQ</option>
+                                                <option>S&P 500</option>
+                                                <option>DOW 30</option>
+                                                <option>Gold</option>
+                                                <option>Bitcoin</option>
+                                                <option>Ethereum</option>
+                                                <option>Custom Symbol</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Frequency</label>
+                                            <select class="form-control">
+                                                <option>Real-time</option>
+                                                <option>Every 15 minutes</option>
+                                                <option>Hourly</option>
+                                                <option>Every 4 hours</option>
+                                                <option>Daily at market open</option>
+                                                <option>Daily at market close</option>
+                                                <option>Weekly</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Alert Condition</label>
+                                            <textarea class="form-control" placeholder="Describe what you want to be alerted about (e.g., 'Notify me when NASDAQ shows a bullish divergence pattern')"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-actions">
+                                            <button class="btn-primary">Create Alert</button>
+                                            <button class="btn-secondary">Save as Template</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- History Tab -->
+                                <div class="alert-tab-content" id="history-tab">
+                                    <div class="alert-history">
+                                        <div class="history-item">
+                                            <div class="history-date">Today 2:15 PM</div>
+                                            <div class="history-alert">📈 NASDAQ breakout confirmed - 2.3% gain as predicted</div>
+                                            <div class="history-action">Alert triggered successfully</div>
+                                        </div>
+                                        
+                                        <div class="history-item">
+                                            <div class="history-date">Yesterday 4:00 PM</div>
+                                            <div class="history-alert">⚠️ Market volatility increased - VIX at 28.5</div>
+                                            <div class="history-action">Alert sent to 12 brokers</div>
+                                        </div>
+                                        
+                                        <div class="history-item">
+                                            <div class="history-date">Dec 18, 3:30 PM</div>
+                                            <div class="history-alert">💰 Gold RSI reversal - Entry point identified</div>
+                                            <div class="history-action">Alert generated insights</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1846,6 +2386,222 @@
             switchAlertTab('active');
         }
         
+        // GPT-Style Chat Functionality
+        let currentChatId = 'current';
+        let messageHistory = [];
+        let isAtBottom = true;
+
+        function startNewChat() {
+            // Clear current chat
+            document.getElementById('chatMessages').innerHTML = '';
+            document.querySelector('.welcome-section').style.display = 'block';
+            messageHistory = [];
+            
+            // Update chat title
+            document.getElementById('currentChatTitle').textContent = 'New Chat';
+            
+            // Remove active class from all history items
+            document.querySelectorAll('.chat-history-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Focus input
+            document.getElementById('chatInput').focus();
+        }
+
+        function loadChat(chatId) {
+            // Remove active class from all items
+            document.querySelectorAll('.chat-history-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            event.target.closest('.chat-history-item').classList.add('active');
+            
+            // Load chat content based on ID
+            const chatTitles = {
+                'current': 'Pattern Recognition Analysis',
+                'yesterday': 'Market Volatility Discussion',
+                'week': 'Gold Price Analysis',
+                'crypto': 'Crypto Market Trends',
+                'earnings': 'Earnings Season Impact'
+            };
+            
+            document.getElementById('currentChatTitle').textContent = chatTitles[chatId] || 'Chat';
+            currentChatId = chatId;
+            
+            // Hide welcome section when loading existing chat
+            document.querySelector('.welcome-section').style.display = 'none';
+            
+            // Load sample messages for demo
+            if (chatId !== 'current') {
+                loadSampleMessages(chatId);
+            }
+        }
+
+        function loadSampleMessages(chatId) {
+            const sampleChats = {
+                'yesterday': [
+                    { type: 'user', content: 'What caused the VIX spike yesterday?' },
+                    { type: 'assistant', content: 'The VIX spike was primarily driven by uncertainty around Federal Reserve policy decisions and geopolitical tensions. When the VIX rises above 25, it typically indicates heightened market anxiety and increased demand for portfolio hedging.' }
+                ],
+                'week': [
+                    { type: 'user', content: 'Analyze gold price movements this week' },
+                    { type: 'assistant', content: 'Gold has shown strong momentum this week, breaking above the $1,980 resistance level. The RSI indicates oversold conditions are being corrected, and the 50-day moving average is providing solid support. This suggests a potential continuation of the upward trend.' }
+                ]
+            };
+            
+            const messages = sampleChats[chatId] || [];
+            const chatContainer = document.getElementById('chatMessages');
+            chatContainer.innerHTML = '';
+            
+            messages.forEach(msg => {
+                addMessageToChat(msg.type, msg.content, false);
+            });
+        }
+
+        function sendSuggestion(text) {
+            document.getElementById('chatInput').value = text;
+            sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Hide welcome section
+            document.querySelector('.welcome-section').style.display = 'none';
+            
+            // Add user message
+            addMessageToChat('user', message);
+            
+            // Clear input
+            input.value = '';
+            adjustTextareaHeight(input);
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate AI response
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = generateAIResponse(message);
+                addMessageToChat('assistant', response);
+            }, 1500);
+        }
+
+        function addMessageToChat(type, content, scroll = true) {
+            const chatContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const avatar = type === 'user' ? '👤' : '🤖';
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            
+            if (scroll) {
+                scrollToBottom();
+            }
+            
+            // Add to message history
+            messageHistory.push({ type, content, timestamp: Date.now() });
+        }
+
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            
+            chatContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function generateAIResponse(message) {
+            const responses = {
+                'nasdaq': 'Based on current NASDAQ analysis, I\'m seeing a strong ascending triangle pattern forming over the past two weeks. The 15,000 level is acting as key resistance, but volume patterns suggest a potential breakout. Historical data shows similar formations led to 3-7% gains in 68% of cases since 2020.',
+                'pattern': 'I\'ve identified several key patterns in the current market structure. The most notable is a bullish flag formation in the S&P 500, combined with a golden cross in the 50/200 day moving averages. This typically signals continued upward momentum.',
+                'gold': 'Gold is showing classic oversold RSI conditions at 28.5, well below the 30 threshold. Historical analysis indicates this level has provided strong buying opportunities in 78% of instances over the past decade. The $1,950 support level remains intact.',
+                'crisis': 'The 2008 financial crisis created a unique market pattern we call "capitulation cascade." Markets fell 57% from peak to trough, but the recovery showed distinct phases: initial bounce (20%), consolidation (6 months), then sustained growth. Current conditions show some similarities in volatility patterns.',
+                'default': 'Based on my analysis of historical market patterns and current technical indicators, I can provide insights into market trends, pattern recognition, and risk assessment. What specific aspect of market analysis would you like me to focus on?'
+            };
+            
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('nasdaq')) return responses.nasdaq;
+            if (lowerMessage.includes('pattern')) return responses.pattern;
+            if (lowerMessage.includes('gold')) return responses.gold;
+            if (lowerMessage.includes('2008') || lowerMessage.includes('crisis')) return responses.crisis;
+            
+            return responses.default;
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('messagesContainer');
+            container.scrollTop = container.scrollHeight;
+            document.getElementById('scrollToBottom').style.display = 'none';
+            isAtBottom = true;
+        }
+
+        function handleInputKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        function shareChat() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Chat link copied to clipboard!');
+            });
+        }
+
+        function clearChat() {
+            if (confirm('Are you sure you want to clear this chat?')) {
+                startNewChat();
+            }
+        }
+
+        // Monitor scroll position
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('messagesContainer');
+            const scrollBtn = document.getElementById('scrollToBottom');
+            
+            container.addEventListener('scroll', function() {
+                const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 100;
+                isAtBottom = isNearBottom;
+                scrollBtn.style.display = isNearBottom ? 'none' : 'block';
+            });
+        });
+
         // Chat functionality
         document.addEventListener('DOMContentLoaded', function() {
             const chatInput = document.getElementById('chatInput');
