@@ -372,8 +372,7 @@
         }
 
         .interface-layout {
-            display: grid;
-            grid-template-columns: 300px 1fr;
+            display: flex;
             min-height: calc(100vh - 80px);
         }
 
@@ -395,63 +394,7 @@
             color: #b8c5d6;
         }
 
-        /* Pattern Index Sidebar */
-        .pattern-index {
-            background: #f8f9fa;
-            border-right: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 2rem 1.5rem;
-            overflow-y: auto;
-            min-height: calc(100vh - 80px);
-        }
 
-        .index-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1e3a8a;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .pattern-category {
-            margin-bottom: 2rem;
-        }
-
-        .category-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #000000;
-            margin-bottom: 0.25rem;
-        }
-
-        .category-subtitle {
-            font-size: 0.8rem;
-            color: #6b7280;
-            margin-bottom: 1rem;
-            font-style: italic;
-        }
-
-        .pattern-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .pattern-item {
-            padding: 0.5rem 0.75rem;
-            margin-bottom: 0.25rem;
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: #374151;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .pattern-item:hover {
-            background: #dc2626;
-            color: #ffffff;
-            transform: translateX(4px);
-        }
 
         /* Main Chat Area */
         .main-chat {
@@ -459,6 +402,7 @@
             flex-direction: column;
             min-height: calc(100vh - 80px);
             background: #ffffff;
+            width: 100%;
         }
 
         .chat-header {
@@ -853,88 +797,7 @@
             40% { transform: scale(1); }
         }
 
-        /* Comparison Table */
-        .comparison-section {
-            padding: 4rem 0;
-            background: #ffffff;
-            color: #000000;
-        }
 
-        .comparison-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            color: #000000;
-        }
-
-        .comparison-section .highlight {
-            color: #dc2626;
-        }
-
-        .comparison-table {
-            max-width: 1000px;
-            margin: 0 auto;
-            overflow-x: auto;
-        }
-
-        .comparison-table table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #ffffff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .comparison-table th {
-            background: #1e3a8a;
-            color: #ffffff;
-            padding: 1.25rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .comparison-table th:first-child {
-            background: #1e3a8a;
-        }
-
-        .comparison-table th:nth-child(2) {
-            background: #1e3a8a;
-        }
-
-        .comparison-table th:nth-child(3) {
-            background: #dc2626;
-        }
-
-        .comparison-table td {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .comparison-table td:first-child {
-            background: rgba(0, 0, 0, 0.05);
-            font-weight: 600;
-            color: #000000;
-        }
-
-        .comparison-table td:nth-child(2) {
-            background: rgba(30, 58, 138, 0.05);
-            color: #1e3a8a;
-        }
-
-        .comparison-table td:nth-child(3) {
-            background: rgba(220, 38, 38, 0.05);
-            color: #dc2626;
-            font-weight: 500;
-        }
-
-        .comparison-table tr:last-child td {
-            border-bottom: none;
-        }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -1161,11 +1024,7 @@
             }
 
             .interface-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .pattern-index {
-                display: none;
+                flex-direction: column;
             }
 
             .chat-header {
@@ -1188,13 +1047,7 @@
                 max-width: 95%;
             }
 
-            .comparison-table {
-                overflow-x: scroll;
-            }
 
-            .comparison-section h2 {
-                font-size: 2rem;
-            }
 
             .search-suggestions {
                 grid-template-columns: 1fr;
@@ -1337,54 +1190,6 @@
         <section class="hero" id="home">
             <div class="full-interface">
                 <div class="interface-layout">
-                    <!-- Pattern Classification Index -->
-                    <div class="pattern-index">
-                        <h3 class="index-title">Pattern Classifications</h3>
-                        
-                        <div class="pattern-category">
-                            <h4 class="category-title">📈 Bullish Patterns</h4>
-                            <p class="category-subtitle">(upward signals)</p>
-                            <ul class="pattern-list">
-                                <li class="pattern-item">Ascending Triangle</li>
-                                <li class="pattern-item">Bull Flag</li>
-                                <li class="pattern-item">Bullish Engulfing</li>
-                                <li class="pattern-item">Bullish Pennant</li>
-                                <li class="pattern-item">Cup and Handle</li>
-                                <li class="pattern-item">Double Bottom</li>
-                                <li class="pattern-item">Falling Wedge</li>
-                                <li class="pattern-item">Inverse Head and Shoulders</li>
-                                <li class="pattern-item">Rounded Bottom (Saucer)</li>
-                                <li class="pattern-item">Triple Bottom</li>
-                            </ul>
-                        </div>
-
-                        <div class="pattern-category">
-                            <h4 class="category-title">📉 Bearish Patterns</h4>
-                            <p class="category-subtitle">(downward signals)</p>
-                            <ul class="pattern-list">
-                                <li class="pattern-item">Bear Flag</li>
-                                <li class="pattern-item">Bearish Engulfing</li>
-                                <li class="pattern-item">Bearish Pennant</li>
-                                <li class="pattern-item">Descending Triangle</li>
-                                <li class="pattern-item">Double Top</li>
-                                <li class="pattern-item">Head and Shoulders</li>
-                                <li class="pattern-item">Rising Wedge</li>
-                                <li class="pattern-item">Triple Top</li>
-                            </ul>
-                        </div>
-
-                        <div class="pattern-category">
-                            <h4 class="category-title">➡️ Neutral / Continuation</h4>
-                            <p class="category-subtitle">(direction depends on breakout)</p>
-                            <ul class="pattern-list">
-                                <li class="pattern-item">Broadening Formation (Megaphone)</li>
-                                <li class="pattern-item">Flag (general form)</li>
-                                <li class="pattern-item">Pennant (general form)</li>
-                                <li class="pattern-item">Symmetrical Triangle</li>
-                            </ul>
-                        </div>
-                    </div>
-
                     <!-- Main Chat Interface -->
                     <div class="main-chat">
                         <div class="chat-header">
@@ -1428,66 +1233,7 @@
 
 
 
-        <!-- Comparison Table Section -->
-        <section class="comparison-section">
-            <div class="container">
-                <h2>GPT-5 vs. <span class="highlight">LiveTrader.ai</span></h2>
-                
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Aspect</th>
-                                <th>GPT-5</th>
-                                <th>LiveTrader.ai</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Core Purpose</td>
-                                <td>General-purpose LLM</td>
-                                <td>Finance-focused Historical Copilot</td>
-                            </tr>
-                            <tr>
-                                <td>Data Memory</td>
-                                <td>Broad knowledge, no live markets</td>
-                                <td>20-30 yrs cross-market history in AWS</td>
-                            </tr>
-                            <tr>
-                                <td>Pattern Recognition</td>
-                                <td>Explains finance concepts</td>
-                                <td>Finds motifs, cycles, regimes</td>
-                            </tr>
-                            <tr>
-                                <td>Explainability</td>
-                                <td>Textual rationales (may hallucinate)</td>
-                                <td>Evidence cards: dates, stats, analogs</td>
-                            </tr>
-                            <tr>
-                                <td>Autonomy</td>
-                                <td>Reactive answers</td>
-                                <td>Proactive scans, alerts, monitoring</td>
-                            </tr>
-                            <tr>
-                                <td>Compliance</td>
-                                <td>No audit trail</td>
-                                <td>Immutable storage, versioning, logs</td>
-                            </tr>
-                            <tr>
-                                <td>Integration</td>
-                                <td>General APIs</td>
-                                <td>Broker/bank APIs, SDKs, enterprise-ready</td>
-                            </tr>
-                            <tr>
-                                <td>Value Add</td>
-                                <td>Broad intelligence</td>
-                                <td>Predictive, explainable financial foresight</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+
     </main>
 
     <!-- Footer -->
