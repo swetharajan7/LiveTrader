@@ -237,6 +237,7 @@
             border-radius: 25px;
             padding: 0.5rem 1rem;
             backdrop-filter: blur(10px);
+            min-height: 60px;
         }
 
         .rotating-ticker-container {
@@ -278,6 +279,9 @@
             height: 45px;
             overflow: hidden;
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .ticker-item {
@@ -292,12 +296,20 @@
             justify-content: center;
             gap: 0.15rem;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .ticker-item:first-child {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         .ticker-item.active {
             opacity: 1;
+            visibility: visible;
             transform: translateY(0);
         }
 
@@ -2444,7 +2456,15 @@
             }
 
             init() {
-                if (this.items.length === 0) return;
+                if (this.items.length === 0) {
+                    console.warn(`No ticker items found for container: ${this.container ? this.container.id : 'unknown'}`);
+                    return;
+                }
+                
+                console.log(`Initializing ticker with ${this.items.length} items`);
+                
+                // Remove active class from all items first
+                this.items.forEach(item => item.classList.remove('active'));
                 
                 // Set first item as active
                 this.items[0].classList.add('active');
@@ -2515,28 +2535,34 @@
         let stockIndicesTicker, commoditiesTicker;
 
         function initializeRotatingTickers() {
-            stockIndicesTicker = new RotatingTicker('stockIndicesTicker', 4000);
-            commoditiesTicker = new RotatingTicker('commoditiesTicker', 4500);
-            
-            // Add hover pause functionality
-            const containers = document.querySelectorAll('.rotating-ticker-container');
-            containers.forEach(container => {
-                container.addEventListener('mouseenter', () => {
-                    if (container.id === 'stockIndicesTicker') {
-                        stockIndicesTicker.pauseRotation();
-                    } else if (container.id === 'commoditiesTicker') {
-                        commoditiesTicker.pauseRotation();
-                    }
-                });
+            // Wait for DOM to be fully loaded
+            setTimeout(() => {
+                console.log('Initializing rotating tickers...');
+                stockIndicesTicker = new RotatingTicker('stockIndicesTicker', 4000);
+                commoditiesTicker = new RotatingTicker('commoditiesTicker', 4500);
                 
-                container.addEventListener('mouseleave', () => {
-                    if (container.id === 'stockIndicesTicker') {
-                        stockIndicesTicker.resumeRotation();
-                    } else if (container.id === 'commoditiesTicker') {
-                        commoditiesTicker.resumeRotation();
-                    }
+                // Add hover pause functionality
+                const containers = document.querySelectorAll('.rotating-ticker-container');
+                console.log('Found ticker containers:', containers.length);
+                
+                containers.forEach(container => {
+                    container.addEventListener('mouseenter', () => {
+                        if (container.id === 'stockIndicesTicker' && stockIndicesTicker) {
+                            stockIndicesTicker.pauseRotation();
+                        } else if (container.id === 'commoditiesTicker' && commoditiesTicker) {
+                            commoditiesTicker.pauseRotation();
+                        }
+                    });
+                    
+                    container.addEventListener('mouseleave', () => {
+                        if (container.id === 'stockIndicesTicker' && stockIndicesTicker) {
+                            stockIndicesTicker.resumeRotation();
+                        } else if (container.id === 'commoditiesTicker' && commoditiesTicker) {
+                            commoditiesTicker.resumeRotation();
+                        }
+                    });
                 });
-            });
+            }, 100);
         }
 
         async function updateMarketToggles() {
@@ -2646,12 +2672,27 @@
             document.getElementById(`${tickerId}-change`).textContent = '--';
         }
 
-        // Initialize rotating tickers
-        initializeRotatingTickers();
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize rotating tickers
+            initializeRotatingTickers();
+            
+            // Update market toggles every 30 seconds
+            updateMarketToggles();
+            setInterval(updateMarketToggles, 30000);
+        });
         
-        // Update market toggles every 30 seconds
-        updateMarketToggles();
-        setInterval(updateMarketToggles, 30000);
+        // Fallback initialization if DOMContentLoaded already fired
+        if (document.readyState === 'loading') {
+            // DOM is still loading
+        } else {
+            // DOM is already loaded
+            setTimeout(() => {
+                initializeRotatingTickers();
+                updateMarketToggles();
+                setInterval(updateMarketToggles, 30000);
+            }, 100);
+        }
 
         // Financial News Ticker System
         class FinancialNewsTicker {
